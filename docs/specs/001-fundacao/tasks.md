@@ -14,7 +14,7 @@
   - Arquivos: `backend/tests/Template.{UnitTests,IntegrationTests,FunctionalTests,ArchitectureTests}`, `backend/tests/Directory.Build.props`, `global.json` (Microsoft.Testing.Platform)
   - Cobre: ADR 0003 (Domain não depende de nada; Application não depende de Infrastructure nem de Api)
   - Verificação: `dotnet test backend` → testes de arquitetura verdes
-- [ ] **T03. Domain comum**
+- [x] **T03. Domain comum**
   - Arquivos: `EntityBase`, `PagedResult`, `NotFoundException`, `ConflictException`, `IRepositoryBase<T>`, `IUnitOfWork`
   - Testes: `PagedResult` (TotalPages, HasNext/HasPrevious, Map; `PageSize = 0` → `TotalPages = 0`); `EntityBase` nasce ativo, `Inativar()`/`Ativar()`
   - Verificação: `dotnet test backend/tests/Template.UnitTests`
@@ -35,7 +35,7 @@
   - Verificação: `dotnet test backend --filter FullyQualifiedName~UsuarioTests`
 - [ ] **T07. `UsuarioConfig`, `UsuarioRepository`, registro no `InfraModule` + migration `AdicionarUsuario`**
   - Cobre: CA-01 e CA-06 (integração)
-  - Testes: salvar e paginar 25 registros; **falha:** e-mail duplicado → `DbUpdateException`
+  - Testes: salvar e paginar 25 registros; `Remover` + commit apaga o registro (ADR 0015); **falha:** e-mail duplicado → `DbUpdateException`
   - Verificação: `dotnet test backend/tests/Template.IntegrationTests`; `dotnet run` aplica a migration e a tabela `usuarios` passa a existir
 - [ ] **T08. DTOs, mapeamento e validators**
   - Cobre: CA-04 e CA-05 (unidade)

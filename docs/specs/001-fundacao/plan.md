@@ -44,7 +44,7 @@ Usar `<TargetFramework>net10.0</TargetFramework>`, `Nullable` e `ImplicitUsings`
   `Entities/Interfaces/{IRepositoryBase,IUnitOfWork}.cs`
 - Infrastructure: `Data/AppDbContext.cs` (`ApplyConfigurationsFromAssembly`, datas no `SaveChangesAsync`),
   `Data/UnitOfWork.cs`, `Repositories/RepositoryBase.cs` (`ListarPaginadoAsync` com `AsNoTracking`,
-  ordenado por `CreatedAt` desc), `InfraModule.cs`
+  ordenado por `CreatedAt` desc; `Remover` via `Set.Remove`, ADR 0015), `InfraModule.cs`
 - Application: `ApplicationModule.cs`
 - Infrastructure: `Data/MigrationExtensions.cs` (`ApplyMigrationsAsync`, ADR 0013)
 - Api: `Program.cs` (`AddApplication().AddInfra()`, `AddProblemDetails`, `AddExceptionHandler<GlobalExceptionHandler>`,

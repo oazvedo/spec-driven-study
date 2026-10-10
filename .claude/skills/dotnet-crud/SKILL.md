@@ -49,7 +49,10 @@ public interface IUsuarioRepository : IRepositoryBase<Usuario>
     Task<bool> ExisteEmailAsync(string email, Guid? ignorarId, CancellationToken cancellationToken);
 }
 ```
-Só consultas **específicas** da entidade. O CRUD básico já vem de `IRepositoryBase<T>`.
+Só consultas **específicas** da entidade. O CRUD básico já vem de `IRepositoryBase<T>`
+(`ObterPorIdAsync`, `ListarPaginadoAsync`, `AdicionarAsync`, `Atualizar` e `Remover`).
+O `Remover` faz remoção física e só deve ser usado se o `plan.md` justificar. A API não expõe `DELETE`; o padrão
+continua sendo ativar e inativar (ADRs 0008 e 0015).
 
 ### 3. Infrastructure: configuração (`Template.Infrastructure/Data/Configurations/UsuarioConfig.cs`)
 ```csharp

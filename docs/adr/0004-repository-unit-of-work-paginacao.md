@@ -1,6 +1,6 @@
 # 0004. Repository, Unit of Work e PagedResult
 
-- **Status:** Aceito
+- **Status:** Aceito (a regra "não há remoção física" foi substituída pelo [ADR 0015](0015-remocao-fisica-no-repositorio.md))
 - **Data:** 2026-10-10
 
 ## Contexto

@@ -1,9 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!-- TEMPORÁRIO: projeto ainda sem testes (código de saída 8). Remover ao criar o primeiro teste. -->
-    <TestingPlatformCommandLineArguments>--ignore-exit-code 8</TestingPlatformCommandLineArguments>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AwesomeAssertions" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Template.Domain\Template.Domain.csproj" />
