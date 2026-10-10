@@ -86,7 +86,7 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 |---|---|---|
 | CA-01 | Integração | `ListarPaginadoAsync_25Registros_RetornaPrimeiraPaginaComTotal` |
 | CA-01 | Funcional | `Listar_SemParametros_Retorna20ItensETotal` |
-| CA-02 | Funcional | `Listar_PageSizeAcimaDe100_Retorna400` · `Listar_PageZero_Retorna400` |
+| CA-02 | Funcional | `Listar_ParametrosForaDoLimite_Retorna400` (`pageSize=101` e `page=0`) |
 | CA-03 | Unidade | `CriarAsync_RequestValido_AdicionaECommita` |
 | CA-03 | Funcional | `Criar_RequestValido_Retorna201ComLocation` |
 | CA-03 | E2E | `cadastrar usuário e vê-lo na tabela` |
@@ -97,12 +97,12 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 | CA-05 | Unidade | `CriarUsuarioRequestValidator_EmailInvalido_Falha` |
 | CA-06 | Unidade | `CriarAsync_EmailDuplicado_LancaConflictException` · `Usuario_EmailComMaiusculas_GuardaEmMinusculas` |
 | CA-06 | Integração | `Commit_EmailDuplicado_LancaDbUpdateException` |
-| CA-06 | Funcional | `Criar_EmailDuplicado_Retorna409` · `Criar_EmailDuplicadoComOutraCaixa_Retorna409` |
+| CA-06 | Funcional | `Criar_EmailDuplicado_Retorna409` (mesma caixa e outra caixa) |
 | CA-07 | Funcional | `Atualizar_RequestValido_Retorna200ComDadosNovos` |
 | CA-08 | Unidade | `ObterAsync_IdInexistente_LancaNotFoundException` |
-| CA-08 | Funcional | `Obter_IdInexistente_Retorna404` · `Inativar_IdInexistente_Retorna404` |
+| CA-08 | Funcional | `Obter_IdInexistente_Retorna404` · `Atualizar_IdInexistente_Retorna404` · `AtivarOuInativar_IdInexistente_Retorna404` |
 | CA-09 | Unidade | `Usuario_Inativar_DefineAtivoFalse` |
-| CA-09 | Funcional | `Inativar_UsuarioExistente_Retorna204EStatusInativo` |
+| CA-09 | Funcional | `InativarEAtivar_UsuarioExistente_Retorna204EAlteraStatus` |
 | CA-10 | Funcional | `Health_BancoDisponivel_Retorna200` |
 | ADR 0003 | Arquitetura | `Domain_NaoDependeDeOutrasCamadas` · `Application_NaoDependeDeInfrastructure` |
 

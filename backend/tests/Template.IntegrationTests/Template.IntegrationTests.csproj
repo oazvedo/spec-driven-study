@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\src\Template.Infrastructure\Template.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Shared\BancoDeTeste.cs" Link="Shared\BancoDeTeste.cs" />
+  </ItemGroup>
+
 </Project>

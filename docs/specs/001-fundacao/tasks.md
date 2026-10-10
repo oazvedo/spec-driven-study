@@ -49,7 +49,7 @@
   - Testes: criar, atualizar, ativar e inativar com sucesso (com `CommitAsync`); **falha:** `ValidationException` sem commit,
     `ConflictException` e `NotFoundException`
   - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*UsuarioServiceTests"`
-- [ ] **T10. `UsuariosController` + testes funcionais**
+- [x] **T10. `UsuariosController` + testes funcionais**
   - Cobre: CA-01 a CA-09 (funcional)
   - Testes: as linhas "Funcional" da tabela CA → testes do `plan.md`
   - Verificação: `dotnet test backend` todo verde; os 6 endpoints aparecem e respondem pelo `/scalar`
