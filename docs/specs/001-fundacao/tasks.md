@@ -6,7 +6,7 @@
 > Implementar com a skill `implement-task`, uma por vez.
 
 ## Fase 1: Base do backend
-- [ ] **T01. Solution e projetos** (o `docker-compose.yml` já existe na raiz)
+- [x] **T01. Solution e projetos** (o `docker-compose.yml` já existe na raiz)
   - Arquivos: `backend/Template.sln`, `backend/Directory.Build.props`,
     `backend/Directory.Packages.props`, os 4 projetos em `src/` com as referências do ADR 0003
   - Verificação: `docker compose up -d` sobe o Postgres; `dotnet build backend` sem erros
