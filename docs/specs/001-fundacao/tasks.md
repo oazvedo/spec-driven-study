@@ -30,24 +30,25 @@
     sobe sem erro, cria o banco `template_crud` (tabela `__EFMigrationsHistory`) e `/scalar` abre a documentação
 
 ## Fase 2: Usuario no backend (skill `dotnet-crud`)
-- [ ] **T06. Entidade `Usuario` + `IUsuarioRepository`**
+- [x] **T06. Entidade `Usuario` + `IUsuarioRepository`**
   - Cobre: CA-09 (unidade)
-  - Verificação: `dotnet test backend --filter FullyQualifiedName~UsuarioTests`
+  - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*UsuarioTests"`
 - [ ] **T07. `UsuarioConfig`, `UsuarioRepository`, registro no `InfraModule` + migration `AdicionarUsuario`**
   - Cobre: CA-01 e CA-06 (integração)
   - Testes: salvar e paginar 25 registros; `Remover` + commit apaga o registro (ADR 0015);
+    `ExisteEmailAsync` encontra o e-mail digitado com outra caixa ou com espaços (o repositório normaliza; RN-02);
     `CreatedAt` preenchido ao adicionar; ao atualizar, `UpdatedAt` preenchido e `CreatedAt` inalterado (`AppDbContext`, T04);
     **falha:** e-mail duplicado → `DbUpdateException`
   - Verificação: `dotnet test backend/tests/Template.IntegrationTests`; `dotnet run` aplica a migration e a tabela `usuarios` passa a existir
 - [ ] **T08. DTOs, mapeamento e validators**
   - Cobre: CA-04 e CA-05 (unidade)
   - Testes: validator aceita um request válido; **falha:** nome vazio, nome com 151 caracteres, e-mail vazio, e-mail inválido
-  - Verificação: `dotnet test backend --filter FullyQualifiedName~Validator`
+  - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*ValidatorTests"`
 - [ ] **T09. `IUsuarioService` / `UsuarioService` + registro no `ApplicationModule`**
   - Cobre: CA-03, CA-04, CA-06, CA-07, CA-08 e CA-09 (unidade)
   - Testes: criar, atualizar, ativar e inativar com sucesso (com `CommitAsync`); **falha:** `ValidationException` sem commit,
     `ConflictException` e `NotFoundException`
-  - Verificação: `dotnet test backend --filter FullyQualifiedName~UsuarioServiceTests`
+  - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*UsuarioServiceTests"`
 - [ ] **T10. `UsuariosController` + testes funcionais**
   - Cobre: CA-01 a CA-09 (funcional)
   - Testes: as linhas "Funcional" da tabela CA → testes do `plan.md`

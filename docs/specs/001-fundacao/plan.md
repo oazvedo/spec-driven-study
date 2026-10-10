@@ -108,7 +108,7 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 
 ## Riscos e decisões pendentes
 - **Unicidade do e-mail (RN-02):** a entidade `Usuario` normaliza o e-mail com `Trim().ToLowerInvariant()`
-  no construtor e no `Atualizar`. O service também normaliza antes de chamar `ExisteEmailAsync`. Assim o índice
+  no construtor e no `Atualizar`, e o `UsuarioRepository.ExisteEmailAsync` normaliza o e-mail recebido (o service passa o e-mail cru). Assim o índice
   único comum já garante a regra, sem precisar de `citext` nem de um índice por expressão.
 - **Docker obrigatório** para os testes de integração, funcionais e e2e.
 - **Versões:** usar as versões estáveis mais recentes do Angular, do NG-ZORRO e dos pacotes NuGet no momento da implementação.

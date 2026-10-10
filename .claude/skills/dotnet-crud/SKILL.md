@@ -24,11 +24,7 @@ public class Usuario : EntityBase          // EntityBase: Id, CreatedAt, Updated
 
     private Usuario() { }                  // EF Core
 
-    public Usuario(string nome, string email)
-    {
-        Nome = nome;
-        Email = NormalizarEmail(email);
-    }
+    public Usuario(string nome, string email) => Atualizar(nome, email);
 
     public void Atualizar(string nome, string email)
     {
@@ -46,6 +42,8 @@ Setters privados. As mudanças passam por métodos com nome de negócio. Nada de
 ```csharp
 public interface IUsuarioRepository : IRepositoryBase<Usuario>
 {
+    // Recebe o e-mail como foi digitado; a implementação normaliza (RN-02) e compara por igualdade,
+    // para usar o índice único da coluna
     Task<bool> ExisteEmailAsync(string email, Guid? ignorarId, CancellationToken cancellationToken);
 }
 ```
@@ -75,7 +73,11 @@ Os tamanhos máximos daqui são os mesmos usados no validator (passo 7).
 public class UsuarioRepository(AppDbContext context) : RepositoryBase<Usuario>(context), IUsuarioRepository
 {
     public Task<bool> ExisteEmailAsync(string email, Guid? ignorarId, CancellationToken cancellationToken)
-        => Set.AnyAsync(x => x.Email == email && x.Id != ignorarId, cancellationToken);
+    {
+        // Normaliza aqui, e não em cada chamador; igualdade simples usa o índice único
+        var normalizado = Usuario.NormalizarEmail(email);
+        return Set.AnyAsync(x => x.Email == normalizado && x.Id != ignorarId, cancellationToken);
+    }
 }
 ```
 **Nunca** chame `SaveChanges` em um repositório (ADR 0004).
@@ -189,7 +191,7 @@ public class UsuarioService(
 
     private async Task GarantirEmailUnicoAsync(string email, Guid? ignorarId, CancellationToken cancellationToken)
     {
-        if (await usuarioRepository.ExisteEmailAsync(Usuario.NormalizarEmail(email), ignorarId, cancellationToken))
+        if (await usuarioRepository.ExisteEmailAsync(email, ignorarId, cancellationToken))
             throw new ConflictException("Já existe um usuário com este e-mail.");
     }
 }
