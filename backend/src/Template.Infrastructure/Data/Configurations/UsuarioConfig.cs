@@ -10,8 +10,8 @@ public class UsuarioConfig : IEntityTypeConfiguration<Usuario>
     {
         builder.ToTable("usuarios");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Nome).HasMaxLength(150).IsRequired();
-        builder.Property(x => x.Email).HasMaxLength(254).IsRequired();
+        builder.Property(x => x.Nome).HasMaxLength(Usuario.NomeMaxLength).IsRequired();
+        builder.Property(x => x.Email).HasMaxLength(Usuario.EmailMaxLength).IsRequired();
         builder.HasIndex(x => x.Email).IsUnique();
     }
 }

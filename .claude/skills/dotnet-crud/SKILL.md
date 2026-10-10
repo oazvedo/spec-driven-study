@@ -19,6 +19,10 @@ Os exemplos usam `Usuario`. Para outra entidade, troque `Usuario`/`usuario`/`usu
 ```csharp
 public class Usuario : EntityBase          // EntityBase: Id, CreatedAt, UpdatedAt, Ativo, Ativar(), Inativar()
 {
+    // Limites usados pela UsuarioConfig (banco) e pelos validators (API): fonte única
+    public const int NomeMaxLength = 150;
+    public const int EmailMaxLength = 254;
+
     public string Nome { get; private set; } = null!;
     public string Email { get; private set; } = null!;
 
@@ -60,13 +64,13 @@ public class UsuarioConfig : IEntityTypeConfiguration<Usuario>
     {
         builder.ToTable("usuarios");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Nome).HasMaxLength(150).IsRequired();
-        builder.Property(x => x.Email).HasMaxLength(254).IsRequired();
+        builder.Property(x => x.Nome).HasMaxLength(Usuario.NomeMaxLength).IsRequired();
+        builder.Property(x => x.Email).HasMaxLength(Usuario.EmailMaxLength).IsRequired();
         builder.HasIndex(x => x.Email).IsUnique();
     }
 }
 ```
-Os tamanhos máximos daqui são os mesmos usados no validator (passo 7).
+Os tamanhos vêm das constantes da entidade, as mesmas usadas no validator (passo 7). Nunca escreva o número aqui.
 O índice `(created_at DESC, id DESC)` da listagem paginada **não** vai aqui: o `AppDbContext` o cria
 automaticamente para toda entidade que herda de `EntityBase`.
 
@@ -112,20 +116,34 @@ public static class UsuarioMappings
         => new(u.Id, u.Nome, u.Email, u.Ativo, u.CreatedAt);
 }
 ```
-`Template.Application/Validators/CriarUsuarioRequestValidator.cs` (e o validator de `Atualizar...`):
+`Template.Application/Validators/UsuarioValidators.cs`: um validator por request. As regras de cada campo
+ficam numa extensão de `IRuleBuilder`, compartilhada pelos dois validators:
 ```csharp
 public class CriarUsuarioRequestValidator : AbstractValidator<CriarUsuarioRequest>
 {
     public CriarUsuarioRequestValidator()
     {
-        RuleFor(x => x.Nome).NotEmpty().WithMessage("O nome é obrigatório.")
-            .MaximumLength(150).WithMessage("O nome deve ter no máximo 150 caracteres.");
-        RuleFor(x => x.Email).NotEmpty().WithMessage("O e-mail é obrigatório.")
-            .EmailAddress().WithMessage("E-mail inválido.")
-            .MaximumLength(254);
+        RuleFor(x => x.Nome).NomeDeUsuario();
+        RuleFor(x => x.Email).EmailDeUsuario();
     }
 }
+// AtualizarUsuarioRequestValidator: idem, sobre AtualizarUsuarioRequest
+
+internal static class UsuarioRegras
+{
+    public static IRuleBuilderOptions<T, string> NomeDeUsuario<T>(this IRuleBuilder<T, string> regra)
+        => regra
+            .NotEmpty().WithMessage("O nome é obrigatório.")
+            .MaximumLength(Usuario.NomeMaxLength).WithMessage("O nome deve ter no máximo {MaxLength} caracteres.");
+
+    public static IRuleBuilderOptions<T, string> EmailDeUsuario<T>(this IRuleBuilder<T, string> regra)
+        => regra
+            .NotEmpty().WithMessage("O e-mail é obrigatório.")
+            .EmailAddress().WithMessage("E-mail inválido.")
+            .MaximumLength(Usuario.EmailMaxLength).WithMessage("O e-mail deve ter no máximo {MaxLength} caracteres.");
+}
 ```
+Limites sempre pelas constantes da entidade. Nas mensagens, use o marcador `{MaxLength}` do FluentValidation.
 
 ### 8. Application: service
 `Template.Application/Services/Interfaces/IUsuarioService.cs`:
@@ -239,7 +257,8 @@ public async Task CriarAsync_EmailInvalido_LancaValidationException()
 - [ ] `IXxxRepository : IRepositoryBase<Xxx>` em `Entities/Interfaces/`
 - [ ] `XxxConfig` com tabela, tamanhos e índices; migration revisada
 - [ ] Repositório registrado no `InfraModule`; service registrado no `ApplicationModule`
-- [ ] Validators com mensagens em português e limites iguais aos da `XxxConfig`
+- [ ] Limites de tamanho como constantes na entidade, usadas pela `XxxConfig` e pelos validators (nenhum número repetido)
+- [ ] Validators com mensagens em português; testes com nome `Metodo_Cenario_ResultadoEsperado` (ADR 0010)
 - [ ] Service com exatamente um `CommitAsync` por operação de escrita
 - [ ] Controller com as 6 ações REST, sem lógica
 - [ ] Testes de unidade, integração e funcional com sucesso **e** falha; `dotnet test backend` verde

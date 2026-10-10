@@ -4,6 +4,10 @@ namespace Template.Domain.Entities;
 
 public class Usuario : EntityBase
 {
+    // Limites usados pela UsuarioConfig (banco) e pelos validators (API)
+    public const int NomeMaxLength = 150;
+    public const int EmailMaxLength = 254;
+
     public string Nome { get; private set; } = null!;
     public string Email { get; private set; } = null!;
 

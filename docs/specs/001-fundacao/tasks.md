@@ -40,7 +40,7 @@
     `CreatedAt` preenchido ao adicionar; ao atualizar, `UpdatedAt` preenchido e `CreatedAt` inalterado (`AppDbContext`, T04);
     **falha:** e-mail duplicado → `DbUpdateException`
   - Verificação: `dotnet test backend/tests/Template.IntegrationTests`; `dotnet run` aplica a migration e a tabela `usuarios` passa a existir
-- [ ] **T08. DTOs, mapeamento e validators**
+- [x] **T08. DTOs, mapeamento e validators**
   - Cobre: CA-04 e CA-05 (unidade)
   - Testes: validator aceita um request válido; **falha:** nome vazio, nome com 151 caracteres, e-mail vazio, e-mail inválido
   - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*ValidatorTests"`
