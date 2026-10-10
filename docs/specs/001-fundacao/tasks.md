@@ -18,7 +18,7 @@
   - Arquivos: `EntityBase`, `PagedResult`, `NotFoundException`, `ConflictException`, `IRepositoryBase<T>`, `IUnitOfWork`
   - Testes: `PagedResult` (TotalPages, HasNext/HasPrevious, Map; `PageSize = 0` → `TotalPages = 0`); `EntityBase` nasce ativo, `Inativar()`/`Ativar()`
   - Verificação: `dotnet test backend/tests/Template.UnitTests`
-- [ ] **T04. Infrastructure comum**
+- [x] **T04. Infrastructure comum**
   - Arquivos: `AppDbContext`, `UnitOfWork`, `RepositoryBase<T>`, `InfraModule`
   - Verificação: `dotnet build backend`
 - [ ] **T05. Api comum: migrations automáticas, Scalar, health check e fixture de testes funcionais**
@@ -35,7 +35,9 @@
   - Verificação: `dotnet test backend --filter FullyQualifiedName~UsuarioTests`
 - [ ] **T07. `UsuarioConfig`, `UsuarioRepository`, registro no `InfraModule` + migration `AdicionarUsuario`**
   - Cobre: CA-01 e CA-06 (integração)
-  - Testes: salvar e paginar 25 registros; `Remover` + commit apaga o registro (ADR 0015); **falha:** e-mail duplicado → `DbUpdateException`
+  - Testes: salvar e paginar 25 registros; `Remover` + commit apaga o registro (ADR 0015);
+    `CreatedAt` preenchido ao adicionar; ao atualizar, `UpdatedAt` preenchido e `CreatedAt` inalterado (`AppDbContext`, T04);
+    **falha:** e-mail duplicado → `DbUpdateException`
   - Verificação: `dotnet test backend/tests/Template.IntegrationTests`; `dotnet run` aplica a migration e a tabela `usuarios` passa a existir
 - [ ] **T08. DTOs, mapeamento e validators**
   - Cobre: CA-04 e CA-05 (unidade)

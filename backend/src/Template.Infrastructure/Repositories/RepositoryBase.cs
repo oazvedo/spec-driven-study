@@ -1,0 +1,48 @@
+using Microsoft.EntityFrameworkCore;
+using Template.Domain.Common;
+using Template.Domain.Entities.Interfaces;
+using Template.Infrastructure.Data;
+
+namespace Template.Infrastructure.Repositories;
+
+// Só rastreia mudanças; quem persiste é o IUnitOfWork (ADR 0004)
+public abstract class RepositoryBase<T>(AppDbContext context) : IRepositoryBase<T> where T : EntityBase
+{
+    protected DbSet<T> Set { get; } = context.Set<T>();
+
+    // FindAsync reaproveita a entidade se ela já estiver rastreada no contexto
+    public Task<T?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken)
+        => Set.FindAsync([id], cancellationToken).AsTask();
+
+    public async Task<PagedResult<T>> ListarPaginadoAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        // Id desempata registros salvos no mesmo commit (mesmo CreatedAt) e mantém a paginação estável
+        var query = Set.AsNoTracking()
+            .OrderByDescending(x => x.CreatedAt)
+            .ThenByDescending(x => x.Id);
+
+        var total = await query.CountAsync(cancellationToken);
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PagedResult<T>(items, page, pageSize, total);
+    }
+
+    // O Id já vem da entidade (Guid v7), então AddAsync não traria ganho
+    public Task AdicionarAsync(T entity, CancellationToken cancellationToken)
+    {
+        Set.Add(entity);
+        return Task.CompletedTask;
+    }
+
+    // Entidade rastreada: o change tracker já detecta só o que mudou. Update só para entidade desanexada.
+    public void Atualizar(T entity)
+    {
+        if (context.Entry(entity).State == EntityState.Detached)
+            Set.Update(entity);
+    }
+
+    public void Remover(T entity) => Set.Remove(entity);
+}
