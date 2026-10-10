@@ -16,7 +16,8 @@ public abstract class RepositoryBase<T>(AppDbContext context) : IRepositoryBase<
 
     public async Task<PagedResult<T>> ListarPaginadoAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
-        // Id desempata registros salvos no mesmo commit (mesmo CreatedAt) e mantém a paginação estável
+        // Id desempata registros salvos no mesmo commit (mesmo CreatedAt) e mantém a paginação estável.
+        // Não reflete a ordem de inserção dentro do commit: Guid v7 só é ordenado entre milissegundos.
         var query = Set.AsNoTracking()
             .OrderByDescending(x => x.CreatedAt)
             .ThenByDescending(x => x.Id);

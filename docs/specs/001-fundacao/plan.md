@@ -58,9 +58,9 @@ Usar `<TargetFramework>net10.0</TargetFramework>`, `Nullable` e `ImplicitUsings`
 **Usuario:** os arquivos dos passos 1 a 10 da skill `dotnet-crud`.
 
 **Pacotes:**
-- Infrastructure: `Npgsql.EntityFrameworkCore.PostgreSQL`, `EFCore.NamingConventions`, `Microsoft.EntityFrameworkCore.Design`, `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
+- Infrastructure: `Npgsql.EntityFrameworkCore.PostgreSQL`, `EFCore.NamingConventions`, `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
 - Application: `FluentValidation`, `FluentValidation.DependencyInjectionExtensions`
-- Api: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`
+- Api: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`, `Microsoft.EntityFrameworkCore.Design` (o `dotnet ef` exige no projeto de inicialização; ferramenta `dotnet-ef` local em `dotnet-tools.json`)
 - Testes: `xunit.v3`, `NSubstitute`, `AwesomeAssertions` (ADR 0014), `Testcontainers.PostgreSql`,
   `Microsoft.AspNetCore.Mvc.Testing`, `NetArchTest.Rules`
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Domain.Entities.Interfaces;
 using Template.Infrastructure.Data;
+using Template.Infrastructure.Repositories;
 
 namespace Template.Infrastructure;
 
@@ -16,6 +17,7 @@ public static class InfraModule
             .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 

@@ -2,7 +2,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-    <PackageReference Include="Scalar.AspNetCore" />  </ItemGroup>
+    <PackageReference Include="Scalar.AspNetCore" />
+    <!-- Necessário no projeto de inicialização para o dotnet ef gerar migrations -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" PrivateAssets="all" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Template.Application\Template.Application.csproj" />

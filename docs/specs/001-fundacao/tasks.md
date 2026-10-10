@@ -33,7 +33,7 @@
 - [x] **T06. Entidade `Usuario` + `IUsuarioRepository`**
   - Cobre: CA-09 (unidade)
   - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*UsuarioTests"`
-- [ ] **T07. `UsuarioConfig`, `UsuarioRepository`, registro no `InfraModule` + migration `AdicionarUsuario`**
+- [x] **T07. `UsuarioConfig`, `UsuarioRepository`, registro no `InfraModule` + migration `AdicionarUsuario`**
   - Cobre: CA-01 e CA-06 (integração)
   - Testes: salvar e paginar 25 registros; `Remover` + commit apaga o registro (ADR 0015);
     `ExisteEmailAsync` encontra o e-mail digitado com outra caixa ou com espaços (o repositório normaliza; RN-02);

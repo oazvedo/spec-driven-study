@@ -5,9 +5,19 @@ namespace Template.Infrastructure.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    // Aplica todas as XxxConfig deste assembly (ADR 0005)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-        => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    {
+        // Aplica todas as XxxConfig deste assembly (ADR 0005)
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        // Índice da ordenação usada por RepositoryBase.ListarPaginadoAsync, em toda entidade
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes().Where(t => typeof(EntityBase).IsAssignableFrom(t.ClrType)))
+        {
+            modelBuilder.Entity(entityType.ClrType)
+                .HasIndex(nameof(EntityBase.CreatedAt), nameof(EntityBase.Id))
+                .IsDescending(true, true);
+        }
+    }
 
     // Todas as sobrecargas de SaveChanges passam por estas duas
     public override int SaveChanges(bool acceptAllChangesOnSuccess)

@@ -51,6 +51,7 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 ## Comandos
 ```bash
 docker compose up -d                       # Postgres (já disponível)
+dotnet tool restore                        # instala o dotnet-ef local (dotnet-tools.json), uma vez por clone
 # a partir da spec 001:
 dotnet run --project backend/src/Template.Api   # aplica as migrations e sobe a API; docs em /scalar
 dotnet build backend && dotnet test backend

@@ -67,6 +67,8 @@ public class UsuarioConfig : IEntityTypeConfiguration<Usuario>
 }
 ```
 Os tamanhos máximos daqui são os mesmos usados no validator (passo 7).
+O índice `(created_at DESC, id DESC)` da listagem paginada **não** vai aqui: o `AppDbContext` o cria
+automaticamente para toda entidade que herda de `EntityBase`.
 
 ### 4. Infrastructure: repositório (`Template.Infrastructure/Repositories/UsuarioRepository.cs`)
 ```csharp
@@ -88,6 +90,7 @@ services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 ```
 
 ### 6. Migration
+`dotnet-ef` é uma ferramenta local do repositório (`dotnet-tools.json`); se não estiver instalada, rode `dotnet tool restore`.
 ```bash
 dotnet ef migrations add AdicionarUsuario \
   -p backend/src/Template.Infrastructure -s backend/src/Template.Api -o Data/Migrations
