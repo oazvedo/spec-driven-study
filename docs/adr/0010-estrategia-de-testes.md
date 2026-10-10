@@ -1,6 +1,6 @@
 # 0010. Estratégia de testes
 
-- **Status:** Aceito
+- **Status:** Aceito (a biblioteca de asserções foi substituída pelo [ADR 0014](0014-awesomeassertions-no-lugar-de-fluentassertions.md))
 - **Data:** 2026-10-10
 
 ## Contexto

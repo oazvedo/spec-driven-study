@@ -10,8 +10,8 @@
   - Arquivos: `backend/Template.sln`, `backend/Directory.Build.props`,
     `backend/Directory.Packages.props`, os 4 projetos em `src/` com as referências do ADR 0003
   - Verificação: `docker compose up -d` sobe o Postgres; `dotnet build backend` sem erros
-- [ ] **T02. Projetos de teste + testes de arquitetura**
-  - Arquivos: `backend/tests/Template.{UnitTests,IntegrationTests,FunctionalTests,ArchitectureTests}`
+- [x] **T02. Projetos de teste + testes de arquitetura**
+  - Arquivos: `backend/tests/Template.{UnitTests,IntegrationTests,FunctionalTests,ArchitectureTests}`, `backend/tests/Directory.Build.props`, `global.json` (Microsoft.Testing.Platform)
   - Cobre: ADR 0003 (Domain não depende de nada; Application não depende de Infrastructure nem de Api)
   - Verificação: `dotnet test backend` → testes de arquitetura verdes
 - [ ] **T03. Domain comum**

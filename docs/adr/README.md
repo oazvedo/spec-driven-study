@@ -25,3 +25,4 @@ Formato MADR enxuto ([template.md](template.md)). Para criar um novo, use a skil
 | [0011](0011-monorepo.md) | Monorepo backend + frontend | Aceito |
 | [0012](0012-autorizacao-por-permissao.md) | Autorização por permissão com HasPermission | Aceito |
 | [0013](0013-migrations-automaticas-na-inicializacao.md) | Migrations aplicadas automaticamente na inicialização | Aceito |
+| [0014](0014-awesomeassertions-no-lugar-de-fluentassertions.md) | AwesomeAssertions no lugar de FluentAssertions | Aceito |

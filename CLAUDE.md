@@ -21,7 +21,7 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 
 ## Skills globais e quando usar
 - `andrej-karpathy-skills:karpathy-guidelines`: toda tarefa de código.
-- `simplify`: depois de implementar uma task, antes de marcá-la como concluída.
+- `simplify`: **obrigatória** depois de toda implementação, antes de marcar como concluída ou commitar. Nunca pule, nem em mudanças pequenas.
 - `code-review`: ao terminar todas as tasks de uma spec.
 - `security-review`: ao mexer em input do usuário, acesso a dados, autenticação ou permissões.
 - `better-accessibility` e `better-writing`: em telas Angular (a11y e textos de interface).
@@ -36,6 +36,17 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 - **Frontend:** Angular com Feature-Sliced Design + NG-ZORRO (ADR 0009).
 - **Testes:** unidade, integração, funcional, e2e e arquitetura, sempre com um cenário de sucesso
   e um de falha (ADR 0010).
+
+## Git
+- Commits **sem** `Co-Authored-By` nem qualquer atribuição ao Claude.
+- Só commite quando o usuário pedir.
+
+## Ambiente
+- O repositório fica no WSL (Ubuntu). **Rode `dotnet` dentro do WSL** (`~/.dotnet`, carregado pelo `~/.bashrc`).
+  O SDK do Windows sobre `\\wsl.localhost\...` compila, mas o Smart App Control bloqueia as DLLs na hora de rodar os testes.
+  A partir do Claude Code no Windows: `wsl.exe -d Ubuntu -e bash -ic 'cd ~/projects/template-crud-skills && <comando>'`.
+- Os testes usam o Microsoft.Testing.Platform (`global.json` na raiz) com xUnit v3.
+- Os testes com Testcontainers precisam do Docker acessível no WSL (Docker Desktop → Settings → Resources → WSL integration → Ubuntu).
 
 ## Comandos
 ```bash

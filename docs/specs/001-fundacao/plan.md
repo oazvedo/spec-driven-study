@@ -61,7 +61,7 @@ Usar `<TargetFramework>net10.0</TargetFramework>`, `Nullable` e `ImplicitUsings`
 - Infrastructure: `Npgsql.EntityFrameworkCore.PostgreSQL`, `EFCore.NamingConventions`, `Microsoft.EntityFrameworkCore.Design`
 - Application: `FluentValidation`, `FluentValidation.DependencyInjectionExtensions`
 - Api: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`, `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
-- Testes: `xunit`, `NSubstitute`, `FluentAssertions`, `Testcontainers.PostgreSql`,
+- Testes: `xunit.v3`, `NSubstitute`, `AwesomeAssertions` (ADR 0014), `Testcontainers.PostgreSql`,
   `Microsoft.AspNetCore.Mvc.Testing`, `NetArchTest.Rules`
 
 **Testes de integração e funcionais:** uma fixture compartilhada (`IAsyncLifetime`) sobe o Postgres via Testcontainers.

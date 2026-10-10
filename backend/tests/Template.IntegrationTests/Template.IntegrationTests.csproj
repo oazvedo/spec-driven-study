@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- TEMPORÁRIO: projeto ainda sem testes (código de saída 8). Remover ao criar o primeiro teste. -->
+    <TestingPlatformCommandLineArguments>--ignore-exit-code 8</TestingPlatformCommandLineArguments>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Template.Infrastructure\Template.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

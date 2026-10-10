@@ -17,11 +17,14 @@ description: Implementa a próxima task aberta de um docs/specs/NNN-nome/tasks.m
    - Os testes da task fazem parte da task, incluindo o cenário de **sucesso** e o de **falha** (ADR 0010).
 5. **Verifique.** Rode o comando de verificação da task (`dotnet build`, `dotnet test`, `npm test`, `npm run lint`...).
    Se falhar, corrija e rode de novo. Nunca marque como concluída uma task com verificação vermelha.
-6. **Limpe.** Rode a skill `simplify` sobre o que mudou nesta task.
+6. **Simplifique (OBRIGATÓRIO).** Rode a skill `simplify` sobre o diff desta task, **sempre**, mesmo que a mudança
+   pareça pequena demais. Nunca pule este passo nem decida que "não precisa". Aplique o que fizer sentido,
+   rode a verificação do passo 5 de novo e relate o que a simplify encontrou, mesmo que não tenha sido nada.
 7. **Marque** `- [x]` no `tasks.md`. Se descobriu trabalho novo, adicione uma task nova em vez de inflar a atual.
 8. **Reporte** ao usuário em até 10 linhas:
    - o que foi feito e os arquivos principais;
    - a saída resumida da verificação;
+   - o resultado da `simplify`;
    - **o que dá para aprender aqui**: o conceito central da task em 1 ou 2 frases;
    - qual é a próxima task.
 9. **Pare.** Não emende a próxima task sem o usuário pedir.
