@@ -48,19 +48,19 @@ Usar `<TargetFramework>net10.0</TargetFramework>`, `Nullable` e `ImplicitUsings`
 - Application: `ApplicationModule.cs`
 - Infrastructure: `Data/MigrationExtensions.cs` (`ApplyMigrationsAsync`, ADR 0013)
 - Api: `Program.cs` (`AddApplication().AddInfra()`, `AddProblemDetails`, `AddExceptionHandler<GlobalExceptionHandler>`,
-  `AddControllers`, `AddOpenApi`, `AddHealthChecks().AddDbContextCheck<AppDbContext>()`;
+  `AddControllers`, `AddOpenApi` (o health check do banco é registrado no `InfraModule`);
   depois do `Build()`: `await app.Services.ApplyMigrationsAsync()`, `MapOpenApi()` + `MapScalarApiReference()` em Development
   e `MapHealthChecks("/api/health")`), `ErrorHandling/GlobalExceptionHandler.cs`,
   `appsettings.Development.json` (`ConnectionStrings:Default` =
   `Host=localhost;Port=5432;Database=template_crud;Username=postgres;Password=postgres`, igual ao `docker-compose.yml`)
-- Api: `public partial class Program;` para a `WebApplicationFactory`
+- Api: no .NET 10 o `Program` gerado já é público, então a `WebApplicationFactory<Program>` funciona sem `public partial class Program;`
 
 **Usuario:** os arquivos dos passos 1 a 10 da skill `dotnet-crud`.
 
 **Pacotes:**
-- Infrastructure: `Npgsql.EntityFrameworkCore.PostgreSQL`, `EFCore.NamingConventions`, `Microsoft.EntityFrameworkCore.Design`
+- Infrastructure: `Npgsql.EntityFrameworkCore.PostgreSQL`, `EFCore.NamingConventions`, `Microsoft.EntityFrameworkCore.Design`, `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
 - Application: `FluentValidation`, `FluentValidation.DependencyInjectionExtensions`
-- Api: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`, `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
+- Api: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`
 - Testes: `xunit.v3`, `NSubstitute`, `AwesomeAssertions` (ADR 0014), `Testcontainers.PostgreSql`,
   `Microsoft.AspNetCore.Mvc.Testing`, `NetArchTest.Rules`
 

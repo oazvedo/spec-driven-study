@@ -21,7 +21,7 @@
 - [x] **T04. Infrastructure comum**
   - Arquivos: `AppDbContext`, `UnitOfWork`, `RepositoryBase<T>`, `InfraModule`
   - Verificação: `dotnet build backend`
-- [ ] **T05. Api comum: migrations automáticas, Scalar, health check e fixture de testes funcionais**
+- [x] **T05. Api comum: migrations automáticas, Scalar, health check e fixture de testes funcionais**
   - Arquivos: `Program.cs`, `GlobalExceptionHandler`, `MigrationExtensions` (ADR 0013), `ApplicationModule` (vazio),
     `appsettings.Development.json`, `launchSettings.json` (abre `/scalar` no debug); fixture Testcontainers + `WebApplicationFactory`
   - Cobre: CA-10

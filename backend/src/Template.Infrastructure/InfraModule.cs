@@ -17,6 +17,8 @@ public static class InfraModule
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
+
         return services;
     }
 }
