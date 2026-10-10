@@ -1,0 +1,32 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+TestResults/
+coverage/
+*.coverage
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+playwright-report/
+test-results/
+
+# IDEs / SO
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ambiente
+.env
+*.local.json
+appsettings.*.local.json
+
+# Claude Code (config pessoal)
+.claude/settings.local.json
