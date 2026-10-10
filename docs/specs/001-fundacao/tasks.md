@@ -44,7 +44,7 @@
   - Cobre: CA-04 e CA-05 (unidade)
   - Testes: validator aceita um request válido; **falha:** nome vazio, nome com 151 caracteres, e-mail vazio, e-mail inválido
   - Verificação: `dotnet test --project backend/tests/Template.UnitTests --filter-class "*ValidatorTests"`
-- [ ] **T09. `IUsuarioService` / `UsuarioService` + registro no `ApplicationModule`**
+- [x] **T09. `IUsuarioService` / `UsuarioService` + registro no `ApplicationModule`**
   - Cobre: CA-03, CA-04, CA-06, CA-07, CA-08 e CA-09 (unidade)
   - Testes: criar, atualizar, ativar e inativar com sucesso (com `CommitAsync`); **falha:** `ValidationException` sem commit,
     `ConflictException` e `NotFoundException`
@@ -53,6 +53,14 @@
   - Cobre: CA-01 a CA-09 (funcional)
   - Testes: as linhas "Funcional" da tabela CA → testes do `plan.md`
   - Verificação: `dotnet test backend` todo verde; os 6 endpoints aparecem e respondem pelo `/scalar`
+- [ ] **T10b. Violação de unicidade concorrente vira 409** (descoberta na simplify da T09)
+  - Problema: duas requisições com o mesmo e-mail passam juntas pelo `ExisteEmailAsync`; a segunda estoura o índice
+    único no `CommitAsync` como `DbUpdateException` → 500 em vez de 409 (CA-06)
+  - Arquivos: `Infrastructure/Data/UnitOfWork.cs` traduz `PostgresException` com SqlState `23505` (unique_violation)
+    em `ConflictException`. Vale para todas as entidades; a Application continua sem conhecer EF/Npgsql
+  - Testes: integração: commit com e-mail duplicado (sem passar pelo service) → `ConflictException`
+    (substitui o teste `Commit_EmailDuplicado_LancaDbUpdateException` da T07)
+  - Verificação: `dotnet test backend`
 
 ## Fase 3: Base do frontend
 - [ ] **T11. App Angular + NG-ZORRO + layout + proxy**

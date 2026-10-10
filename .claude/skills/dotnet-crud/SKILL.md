@@ -187,9 +187,11 @@ public class UsuarioService(
     {
         await atualizarValidator.ValidateAndThrowAsync(request, cancellationToken);
         var usuario = await ObterEntidadeAsync(id, cancellationToken);
-        await GarantirEmailUnicoAsync(request.Email, id, cancellationToken);
+        if (Usuario.NormalizarEmail(request.Email) != usuario.Email) // e-mail igual não precisa consultar unicidade
+            await GarantirEmailUnicoAsync(request.Email, id, cancellationToken);
 
         usuario.Atualizar(request.Nome, request.Email);
+        usuarioRepository.Atualizar(usuario);   // sem custo se já rastreada; necessário se vier desanexada
         await unitOfWork.CommitAsync(cancellationToken);
         return usuario.ToResponse();
     }
