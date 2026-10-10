@@ -78,7 +78,7 @@ export class UsuarioApi {
   ```ts
   { path: 'usuarios', loadComponent: () => import('../pages/usuarios-page').then(m => m.UsuariosPage) }
   ```
-- Adicione o item no menu lateral (`nz-menu`) do layout.
+- Adicione o item no array `menu` do shell (`app/app.ts`), que renderiza o `nz-menu` lateral.
 
 ### 5. Testes: **sucesso e falha** (ADR 0010)
 | Onde | Mínimo |
@@ -87,6 +87,15 @@ export class UsuarioApi {
 | `features/usuario-form/*.spec.ts` | **Sucesso:** form válido chama `criar` e emite `salvo`. **Falha:** form vazio não chama a API e mostra erros; um 400 do servidor exibe o erro no campo. |
 | `widgets/usuarios-table/*.spec.ts` | Trocar de página chama `listar` com `page` e `pageSize` novos. |
 | `e2e/usuarios.spec.ts` (Playwright) | **Sucesso:** cadastrar usuário e vê-lo na tabela. **Falha:** submeter vazio mostra erros e não cria registro. Opcional: inativar e ver a tag mudar. |
+
+## CSS do NG-ZORRO: só o que se usa
+Os estilos do NG-ZORRO ficam em `frontend/src/ng-zorro.less`, que importa o `entry.less` base e o `entry.less`
+**de cada componente usado**. O `ng-zorro-antd.min.css` completo (cerca de 570 kB) estouraria o orçamento de bundle.
+O `entry.less` já traz as dependências do componente: por exemplo, `table` inclui pagination, spin e empty.
+Ao usar um componente pela primeira vez (`table`, `form`, `modal`, `message`, `tag`, `popconfirm`, `button`,
+`input`, `switch`...), acrescente uma linha no mesmo formato:
+`@import '../node_modules/ng-zorro-antd/<componente>/style/entry.less';`
+Componente sem estilo na tela = import esquecido.
 
 ## Regras gerais
 - Componentes standalone, `ChangeDetectionStrategy.OnPush`, `inject()` em vez de construtor, `input()` e `output()`.

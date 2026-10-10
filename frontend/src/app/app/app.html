@@ -1,0 +1,19 @@
+<nz-layout class="shell">
+  <nz-header class="cabecalho">
+    <span class="titulo">Template CRUD</span>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzWidth="220px" nzTheme="light">
+      <ul nz-menu nzMode="inline" aria-label="Menu principal">
+        @for (item of menu; track item.rota) {
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="item.rota">{{ item.titulo }}</a>
+          </li>
+        }
+      </ul>
+    </nz-sider>
+    <nz-content class="conteudo">
+      <router-outlet />
+    </nz-content>
+  </nz-layout>
+</nz-layout>

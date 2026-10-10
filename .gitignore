@@ -10,7 +10,10 @@ coverage/
 # Node / Angular
 node_modules/
 dist/
+out-tsc/
 .angular/
+npm-debug.log
+__screenshots__/
 playwright-report/
 test-results/
 

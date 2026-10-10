@@ -1,0 +1,8 @@
+// Estilos do NG-ZORRO sob demanda (ADR 0009): base + o entry.less de cada componente usado.
+// O entry.less já importa as dependências do componente (ex.: table traz pagination, spin, empty).
+// Ao usar um componente novo, adicione o import dele aqui.
+// Caminho relativo a node_modules: o "exports" do pacote não expõe style/entry.less.
+@root-entry-name: default; // tema base (claro) exigido pelos arquivos de tema do NG-ZORRO
+@import '../node_modules/ng-zorro-antd/style/entry.less';
+@import '../node_modules/ng-zorro-antd/layout/style/entry.less';
+@import '../node_modules/ng-zorro-antd/menu/style/entry.less';

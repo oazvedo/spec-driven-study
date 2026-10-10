@@ -63,8 +63,8 @@
   - Verificação: `dotnet test backend`
 
 ## Fase 3: Base do frontend
-- [ ] **T11. App Angular + NG-ZORRO + layout + proxy**
-  - Arquivos: `frontend/` (ng new), `proxy.conf.json`, `app/layout/`, as pastas FSD com `.gitkeep`
+- [x] **T11. App Angular + NG-ZORRO + layout + proxy**
+  - Arquivos: `frontend/` (ng new), `proxy.conf.json`, shell em `app/app.ts`, as pastas FSD com `.gitkeep`
   - Verificação: `npm run build`; `npm start` abre o layout com o menu
 - [ ] **T12. Lint com as regras do FSD**
   - Arquivos: `eslint.config.js` com `eslint-plugin-boundaries`

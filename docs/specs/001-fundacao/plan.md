@@ -69,11 +69,16 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 `WebApplicationFactory<Program>` troca a connection string pela do container, e a própria API aplica as migrations ao subir (ADR 0013).
 
 ## Frontend: arquivos
-- `ng new frontend --routing --style=scss --ssr=false` e depois `ng add ng-zorro-antd` (locale pt-BR, ícones).
+- `ng new frontend --routing --style=scss --ssr=false` e depois `ng add ng-zorro-antd` (locale pt-BR, sem tema
+  customizado e sem ícones dinâmicos). Sem `provideNzDateFnsAdapter` enquanto não houver componente de data.
+- Estilos do NG-ZORRO sob demanda em `src/ng-zorro.less` (Less, mecanismo oficial): base + `entry.less` de cada componente
+  usado, que já traz as dependências. O `ng-zorro-antd.min.css` inteiro estoura o orçamento de 1 MB do bundle inicial
+  (regra na skill `angular-crud`). `LOCALE_ID` = `pt` para as pipes de data e número.
 - `proxy.conf.json`: `/api` → `http://localhost:5000` (porta da API definida em `launchSettings.json`).
 - Estrutura FSD em `src/app/`: `app/`, `pages/`, `widgets/`, `features/`, `entities/` e `shared/` (ADR 0009).
 - `app/`: `app.config.ts` (`provideHttpClient(withInterceptors([problemDetailsInterceptor]))`, NG-ZORRO pt-BR),
-  `app.routes.ts` (redireciona `''` → `usuarios`) e `layout/` (`nz-layout` + `nz-menu` lateral).
+  `app.routes.ts` (redireciona `''` → `usuarios`) e o shell no próprio componente raiz `app.ts`
+  (`nz-layout` + `nz-menu` lateral alimentado pelo array `menu`).
 - `shared/api/`: `paged-result.ts`, `problem-details.ts` (tipo), `problem-details.interceptor.ts` (`nz-message` para erros ≠ 400)
   e `apply-server-errors.ts` (aplica `errors` do 400 em um `FormGroup`).
 - Lint: `ng add @angular-eslint/schematics` + `eslint-plugin-boundaries`, com os elementos `app`, `pages`, `widgets`,

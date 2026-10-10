@@ -1,0 +1,18 @@
+.shell {
+  min-height: 100vh;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+}
+
+.titulo {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.conteudo {
+  padding: 24px;
+}
