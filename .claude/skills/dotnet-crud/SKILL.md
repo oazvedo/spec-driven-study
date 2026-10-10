@@ -27,14 +27,17 @@ public class Usuario : EntityBase          // EntityBase: Id, CreatedAt, Updated
     public Usuario(string nome, string email)
     {
         Nome = nome;
-        Email = email;
+        Email = NormalizarEmail(email);
     }
 
     public void Atualizar(string nome, string email)
     {
         Nome = nome;
-        Email = email;
+        Email = NormalizarEmail(email);
     }
+
+    // E-mail único sem diferenciar maiúsculas de minúsculas (spec 001, RN-02)
+    public static string NormalizarEmail(string email) => email.Trim().ToLowerInvariant();
 }
 ```
 Setters privados. As mudanças passam por métodos com nome de negócio. Nada de atributos de EF.
@@ -183,7 +186,7 @@ public class UsuarioService(
 
     private async Task GarantirEmailUnicoAsync(string email, Guid? ignorarId, CancellationToken cancellationToken)
     {
-        if (await usuarioRepository.ExisteEmailAsync(email, ignorarId, cancellationToken))
+        if (await usuarioRepository.ExisteEmailAsync(Usuario.NormalizarEmail(email), ignorarId, cancellationToken))
             throw new ConflictException("Já existe um usuário com este e-mail.");
     }
 }

@@ -1,6 +1,6 @@
 # 001. Fundação: Spec
 
-- **Status:** Aceito
+- **Status:** Aprovada
 - **Data:** 2026-10-10
 
 ## Problema
@@ -21,7 +21,9 @@ editar, ativar e inativar). Esse cadastro é a entidade de referência que as pr
 
 ## Regras de negócio
 - **RN-01:** O nome é obrigatório e tem no máximo 150 caracteres.
-- **RN-02:** O e-mail é obrigatório, precisa ser válido, tem no máximo 254 caracteres e é **único** entre os usuários.
+- **RN-02:** O e-mail é obrigatório, precisa ser válido, tem no máximo 254 caracteres e é **único** entre os usuários,
+  sem diferenciar maiúsculas de minúsculas (`Ana@x.com` e `ana@x.com` são o mesmo e-mail). O e-mail é guardado
+  sem espaços nas pontas e em minúsculas.
 - **RN-03:** Todo usuário novo nasce **ativo**.
 - **RN-04:** Não existe exclusão definitiva. Um usuário só pode ser inativado e reativado.
 - **RN-05:** A listagem mostra 20 itens por página por padrão, aceita no máximo 100 e exibe primeiro os cadastrados mais recentemente.
@@ -38,7 +40,8 @@ editar, ativar e inativar). Esse cadastro é a entidade de referência que as pr
   mostra a mensagem junto de cada campo e nada é gravado.
 - **CA-05 (falha):** Quando o e-mail informado não é um e-mail válido, então o sistema recusa com "E-mail inválido.".
 - **CA-06 (falha):** Dado que o e-mail já pertence a outro usuário, quando o administrador cadastra ou edita
-  usando esse e-mail, então o sistema recusa informando que o e-mail já está em uso.
+  usando esse e-mail, mesmo com outra combinação de maiúsculas e minúsculas, então o sistema recusa
+  informando que o e-mail já está em uso.
 - **CA-07:** Dado um usuário existente, quando o administrador altera o nome e o e-mail com dados válidos,
   então a listagem passa a exibir os dados novos.
 - **CA-08 (falha):** Quando alguém consulta, edita, ativa ou inativa um usuário que não existe,
@@ -54,5 +57,4 @@ editar, ativar e inativar). Esse cadastro é a entidade de referência que as pr
 - Deploy, CI e ambientes além do local.
 
 ## Dúvidas em aberto
-- O e-mail deve ser único sem diferenciar maiúsculas de minúsculas (`Ana@x.com` = `ana@x.com`)?
-  *Sugestão:* sim, guardando o e-mail sempre em minúsculas. 
+- Nenhuma. *(Resolvida em 2026-10-10: o e-mail é único sem diferenciar maiúsculas de minúsculas; veja RN-02.)* 

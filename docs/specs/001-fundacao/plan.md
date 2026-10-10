@@ -95,9 +95,9 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 | CA-04 | Frontend unit | `usuario-form: form vazio não chama a API` |
 | CA-04 | E2E | `submeter formulário vazio mostra erros e não cria` |
 | CA-05 | Unidade | `CriarUsuarioRequestValidator_EmailInvalido_Falha` |
-| CA-06 | Unidade | `CriarAsync_EmailDuplicado_LancaConflictException` |
+| CA-06 | Unidade | `CriarAsync_EmailDuplicado_LancaConflictException` · `Usuario_EmailComMaiusculas_GuardaEmMinusculas` |
 | CA-06 | Integração | `Commit_EmailDuplicado_LancaDbUpdateException` |
-| CA-06 | Funcional | `Criar_EmailDuplicado_Retorna409` |
+| CA-06 | Funcional | `Criar_EmailDuplicado_Retorna409` · `Criar_EmailDuplicadoComOutraCaixa_Retorna409` |
 | CA-07 | Funcional | `Atualizar_RequestValido_Retorna200ComDadosNovos` |
 | CA-08 | Unidade | `ObterAsync_IdInexistente_LancaNotFoundException` |
 | CA-08 | Funcional | `Obter_IdInexistente_Retorna404` · `Inativar_IdInexistente_Retorna404` |
@@ -107,8 +107,9 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 | ADR 0003 | Arquitetura | `Domain_NaoDependeDeOutrasCamadas` · `Application_NaoDependeDeInfrastructure` |
 
 ## Riscos e decisões pendentes
-- **Unicidade do e-mail sem diferenciar maiúsculas e minúsculas:** depende da resposta à dúvida da spec.
-  Se for "sim", a entidade normaliza o e-mail para minúsculas (`Trim().ToLowerInvariant()`).
+- **Unicidade do e-mail (RN-02):** a entidade `Usuario` normaliza o e-mail com `Trim().ToLowerInvariant()`
+  no construtor e no `Atualizar`. O service também normaliza antes de chamar `ExisteEmailAsync`. Assim o índice
+  único comum já garante a regra, sem precisar de `citext` nem de um índice por expressão.
 - **Docker obrigatório** para os testes de integração, funcionais e e2e.
 - **Versões:** usar as versões estáveis mais recentes do Angular, do NG-ZORRO e dos pacotes NuGet no momento da implementação.
   Se alguma API citada aqui tiver mudado (por exemplo `rxResource`), siga a documentação oficial e anote no study-log.

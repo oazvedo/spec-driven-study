@@ -15,5 +15,5 @@ Para criar: skill `spec`. Para implementar: skill `implement-task`. Templates em
 ## Roadmap
 | # | Spec | Status |
 |---|---|---|
-| 001 | [Fundação: esqueleto completo com CRUD de Usuário](001-fundacao/spec.md) | Rascunho |
+| 001 | [Fundação: esqueleto completo com CRUD de Usuário](001-fundacao/spec.md) | Aprovada |
 | 002 | Autenticação (JWT) e autorização por permissão (`[HasPermission]`, ADR 0012) | A escrever |
