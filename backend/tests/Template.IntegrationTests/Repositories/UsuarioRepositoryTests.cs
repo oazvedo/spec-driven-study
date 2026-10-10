@@ -1,6 +1,7 @@
 using AwesomeAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Template.Domain.Common.Exceptions;
 using Template.Domain.Entities;
 using Template.Domain.Entities.Interfaces;
 
@@ -135,13 +136,15 @@ public class UsuarioRepositoryTests(PostgresFixture fixture) : IAsyncLifetime
     }
 
     // CA-06 (falha): o índice único barra e-mail duplicado mesmo sem passar pela checagem do service
+    // (caso de requisições simultâneas), e o UnitOfWork traduz para ConflictException (409)
     [Fact]
-    public async Task Commit_EmailDuplicado_LancaDbUpdateException()
+    public async Task Commit_EmailDuplicado_LancaConflictException()
     {
         await SalvarAsync(new Usuario("Ana", "ana@x.com"));
 
         var act = () => SalvarAsync(new Usuario("Outra Ana", "ANA@x.com"));
 
-        await act.Should().ThrowAsync<DbUpdateException>();
+        (await act.Should().ThrowAsync<ConflictException>())
+            .WithInnerException<DbUpdateException>();
     }
 }

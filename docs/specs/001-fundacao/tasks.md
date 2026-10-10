@@ -53,7 +53,7 @@
   - Cobre: CA-01 a CA-09 (funcional)
   - Testes: as linhas "Funcional" da tabela CA → testes do `plan.md`
   - Verificação: `dotnet test backend` todo verde; os 6 endpoints aparecem e respondem pelo `/scalar`
-- [ ] **T10b. Violação de unicidade concorrente vira 409** (descoberta na simplify da T09)
+- [x] **T10b. Violação de unicidade concorrente vira 409** (descoberta na simplify da T09)
   - Problema: duas requisições com o mesmo e-mail passam juntas pelo `ExisteEmailAsync`; a segunda estoura o índice
     único no `CommitAsync` como `DbUpdateException` → 500 em vez de 409 (CA-06)
   - Arquivos: `Infrastructure/Data/UnitOfWork.cs` traduz `PostgresException` com SqlState `23505` (unique_violation)
