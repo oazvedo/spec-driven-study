@@ -72,7 +72,7 @@
   - Arquivos: `eslint.config.js` com `eslint-plugin-boundaries`
   - Testes: **falha:** um import proibido criado temporariamente (`entities` → `features`) faz `npm run lint` falhar; remova-o em seguida
   - Verificação: `npm run lint` verde
-- [ ] **T13. `shared/api`**
+- [x] **T13. `shared/api`**
   - Arquivos: `paged-result.ts`, `problem-details.ts`, `problem-details.interceptor.ts`, `apply-server-errors.ts`
   - Testes: `applyServerErrors` marca o controle certo; **falha:** campo desconhecido no `errors` é ignorado sem quebrar
   - Verificação: `npm test`
@@ -83,6 +83,9 @@
 - [ ] **T15. `features/usuario-form`**
   - Cobre: CA-03, CA-04, CA-05, CA-06 e CA-07 (frontend unit)
   - Testes: válido chama `criar` e emite `salvo`; **falha:** vazio não chama a API; um 400 ou 409 do servidor exibe o erro no campo
+  - Incluir (descoberto na simplify da T13): `HttpContextToken` em `shared/api` (ex.: `STATUS_TRATADOS`) para quem chama
+    declarar os status que trata; o interceptor não mostra nz-message para eles. O form declara 409, para o erro de
+    e-mail duplicado não aparecer duas vezes (no campo e no nz-message)
   - Verificação: `npm test`
 - [ ] **T16. `features/usuario-toggle-ativo`**
   - Cobre: CA-09
