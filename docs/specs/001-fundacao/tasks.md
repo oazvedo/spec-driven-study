@@ -80,7 +80,7 @@
 ## Fase 4: Usuario no frontend (skill `angular-crud`)
 - [x] **T14. `entities/usuario`** (model, api, status tag)
   - Verificação: `npm test` (URL e verbo de cada método)
-- [ ] **T15. `features/usuario-form`**
+- [x] **T15. `features/usuario-form`**
   - Cobre: CA-03, CA-04, CA-05, CA-06 e CA-07 (frontend unit)
   - Testes: válido chama `criar` e emite `salvo`; **falha:** vazio não chama a API; um 400 ou 409 do servidor exibe o erro no campo
   - Incluir (descoberto na simplify da T13): `HttpContextToken` em `shared/api` (ex.: `STATUS_TRATADOS`) para quem chama

@@ -1,8 +1,8 @@
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, HttpContext, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { problemDetailsInterceptor } from './problem-details.interceptor';
+import { problemDetailsInterceptor, STATUS_TRATADOS } from './problem-details.interceptor';
 
 describe('problemDetailsInterceptor', () => {
   let http: HttpClient;
@@ -43,6 +43,16 @@ describe('problemDetailsInterceptor', () => {
     falharCom(500, null);
 
     expect(mensagens.error).toHaveBeenCalledWith('Ocorreu um erro inesperado. Tente novamente.');
+  });
+
+  it('não mostra mensagem para um status que quem chamou declarou tratar', () => {
+    let erro: unknown;
+    const context = new HttpContext().set(STATUS_TRATADOS, [400, 409]);
+    http.get('/api/x', { context }).subscribe({ error: (e) => (erro = e) });
+    backend.expectOne('/api/x').flush({ detail: 'Já existe.' }, { status: 409, statusText: 'erro' });
+
+    expect(mensagens.error).not.toHaveBeenCalled();
+    expect(erro).toBeDefined();
   });
 
   it('não mostra mensagem para 400: os erros por campo ficam no formulário', () => {

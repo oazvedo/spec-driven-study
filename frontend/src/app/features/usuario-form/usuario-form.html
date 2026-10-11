@@ -1,0 +1,17 @@
+<form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="salvar()">
+  <nz-form-item>
+    <nz-form-label nzFor="usuario-nome" nzRequired>Nome</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('nome')">
+      <input nz-input id="usuario-nome" formControlName="nome" autocomplete="name" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="usuario-email" nzRequired>E-mail</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('email')">
+      <input nz-input id="usuario-email" type="email" formControlName="email" autocomplete="email" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button nzType="primary" type="submit" [nzLoading]="salvando()">Salvar</button>
+</form>

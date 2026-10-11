@@ -8,8 +8,9 @@ description: Receita para criar ou alterar uma feature CRUD no frontend Angular 
 Regras completas no ADR 0009 (FSD + NG-ZORRO), no ADR 0008 (contrato REST) e no ADR 0010 (testes).
 Os exemplos usam `usuario`. Para outra entidade, troque o nome.
 
-> A base comum (`shared/api` com `PagedResult<T>`, interceptor de ProblemDetails e helper de erros de
-> formulário; o layout em `app/`; o proxy `/api`) é criada pela spec 001. Aqui só se adiciona uma entidade.
+> A base comum (`shared/api` com `PagedResult<T>`, interceptor de ProblemDetails e `STATUS_TRATADOS`;
+> `shared/forms` com `applyServerErrors` e `marcarInvalidos`; o shell em `app/`; o proxy `/api`) é criada pela
+> spec 001. Aqui só se adiciona uma entidade.
 
 ## Regra de ouro do FSD
 Os imports só vão **para baixo**: `app → pages → widgets → features → entities → shared`.
@@ -56,9 +57,13 @@ export class UsuarioApi {
   - Usa um `FormGroup` tipado com `nonNullable`, e as validações espelham o validator do backend
     (obrigatório, e-mail, tamanho máximo).
   - Usa `nz-form` + `nz-form-control [nzErrorTip]`, com mensagens em português.
-  - Erro 400 do servidor: aplique os `errors` do ProblemDetails nos controles (helper de `shared/api`).
-    Erro 409: mensagem no campo e-mail.
-  - O botão salvar fica `nzLoading` enquanto a requisição está em andamento, e o submit é bloqueado se o form for inválido.
+  - Erro 400 do servidor: `applyServerErrors` (de `shared/forms`) aplica os `errors` do ProblemDetails nos controles.
+    Erro 409: o mesmo helper, montando o erro no campo único (no usuário, o e-mail).
+  - A chamada à API envia um `HttpContext` com `STATUS_TRATADOS` = `[400, 409]`, para o interceptor não repetir
+    em `nz-message` o erro que o formulário já mostra no campo.
+  - Submit com form inválido: `marcarInvalidos(form)` (de `shared/forms`). O `markAllAsTouched` sozinho não faz
+    o `nz-form-control` exibir o erro.
+  - O botão salvar fica `nzLoading` enquanto a requisição está em andamento.
 - **`features/usuario-toggle-ativo/`**: um `nz-switch` ou botão que chama `ativar` ou `inativar`,
   com confirmação via `nz-popconfirm` ao inativar. Emite `alterado = output<void>()`.
 
@@ -96,6 +101,9 @@ Ao usar um componente pela primeira vez (`table`, `form`, `modal`, `message`, `t
 `input`, `switch`...), acrescente uma linha no mesmo formato:
 `@import '../node_modules/ng-zorro-antd/<componente>/style/entry.less';`
 Componente sem estilo na tela = import esquecido.
+Todo esse CSS é global e vai no bundle inicial (decisão da spec 001: mais simples que CSS por página). Por isso o
+orçamento do bundle inicial no `angular.json` é de 800 kB para aviso e 1,5 MB para erro, em tamanho bruto: o CSS do
+NG-ZORRO comprime cerca de 10 vezes.
 
 ## Regras gerais
 - Componentes standalone, `ChangeDetectionStrategy.OnPush`, `inject()` em vez de construtor, `input()` e `output()`.

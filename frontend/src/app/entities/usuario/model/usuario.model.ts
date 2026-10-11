@@ -13,3 +13,7 @@ export interface CriarUsuarioRequest {
 }
 
 export type AtualizarUsuarioRequest = CriarUsuarioRequest;
+
+// Mesmos limites de Usuario.NomeMaxLength / EmailMaxLength no backend
+export const USUARIO_NOME_MAX = 150;
+export const USUARIO_EMAIL_MAX = 254;

@@ -1,18 +1,22 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpContextToken, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { tap } from 'rxjs';
 import { ProblemDetails } from './problem-details';
 
-// Mostra um nz-message para os erros da API. O 400 fica de fora: os erros por campo são exibidos
-// no próprio formulário (applyServerErrors). O erro segue adiante para quem fez a chamada.
+// Status HTTP que quem fez a chamada vai tratar na própria tela; para eles o interceptor não mostra nz-message.
+// Padrão: 400, cujos erros por campo vão para o formulário (applyServerErrors).
+// Ex.: o formulário de usuário declara [400, 409] para mostrar o e-mail duplicado no próprio campo.
+export const STATUS_TRATADOS = new HttpContextToken<readonly number[]>(() => [400]);
+
+// Mostra um nz-message para os erros da API que ninguém declarou tratar. O erro segue adiante para quem chamou.
 export const problemDetailsInterceptor: HttpInterceptorFn = (req, next) => {
   const mensagens = inject(NzMessageService);
 
   return next(req).pipe(
     tap({
       error: (erro: unknown) => {
-        if (erro instanceof HttpErrorResponse && erro.status !== 400) {
+        if (erro instanceof HttpErrorResponse && !req.context.get(STATUS_TRATADOS).includes(erro.status)) {
           mensagens.error(mensagemDeErro(erro));
         }
       },

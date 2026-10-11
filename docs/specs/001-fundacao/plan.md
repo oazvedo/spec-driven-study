@@ -72,15 +72,18 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 - `ng new frontend --routing --style=scss --ssr=false` e depois `ng add ng-zorro-antd` (locale pt-BR, sem tema
   customizado e sem ícones dinâmicos). Sem `provideNzDateFnsAdapter` enquanto não houver componente de data.
 - Estilos do NG-ZORRO sob demanda em `src/ng-zorro.less` (Less, mecanismo oficial): base + `entry.less` de cada componente
-  usado, que já traz as dependências. O `ng-zorro-antd.min.css` inteiro estoura o orçamento de 1 MB do bundle inicial
-  (regra na skill `angular-crud`). `LOCALE_ID` = `pt` para as pipes de data e número.
+  usado, que já traz as dependências; o `ng-zorro-antd.min.css` inteiro seria desnecessariamente grande (regra na skill
+  `angular-crud`). O CSS é global, sem CSS por página, e o orçamento do bundle inicial é de 800 kB (aviso) e 1,5 MB
+  (erro) em tamanho bruto: o CSS do NG-ZORRO comprime cerca de 10 vezes. `LOCALE_ID` = `pt` para as pipes de data e número.
 - `proxy.conf.json`: `/api` → `http://localhost:5000` (porta da API definida em `launchSettings.json`).
 - Estrutura FSD em `src/app/`: `app/`, `pages/`, `widgets/`, `features/`, `entities/` e `shared/` (ADR 0009).
 - `app/`: `app.config.ts` (`provideHttpClient(withInterceptors([problemDetailsInterceptor]))`, NG-ZORRO pt-BR),
   `app.routes.ts` (redireciona `''` → `usuarios`) e o shell no próprio componente raiz `app.ts`
   (`nz-layout` + `nz-menu` lateral alimentado pelo array `menu`).
-- `shared/api/`: `paged-result.ts`, `problem-details.ts` (tipo), `problem-details.interceptor.ts` (`nz-message` para erros ≠ 400)
-  e `apply-server-errors.ts` (aplica `errors` do 400 em um `FormGroup`).
+- `shared/api/`: `paged-result.ts`, `problem-details.ts` (tipo) e `problem-details.interceptor.ts` (`nz-message` para os erros,
+  exceto os status em `STATUS_TRATADOS`, padrão 400).
+- `shared/forms/`: `apply-server-errors.ts` (aplica `errors` do 400 em um `FormGroup`) e `mark-invalid.ts`
+  (`marcarInvalidos`, para o `nz-form-control` exibir os erros no submit).
 - Lint: `ng add angular-eslint` + `eslint-plugin-boundaries` (v7, regra `boundaries/dependencies`), com os elementos
   `app`, `pages`, `widgets`, `features`, `entities` e `shared`; regras "só importa camadas abaixo", "slice não importa
   slice irmã" e "de fora, só pela API pública (`index.ts`)". Teste de arquitetura do frontend: `fsd.lint.test.mjs`

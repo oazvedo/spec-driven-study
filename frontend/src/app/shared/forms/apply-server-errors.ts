@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { ProblemDetails } from './problem-details';
+import { ProblemDetails } from '../api';
 
 // Leva os erros por campo de um 400 (ProblemDetails.errors) para os controles do formulário.
 // O erro fica em `servidor`, para o template exibir no nzErrorTip. Campos que o form não tem são ignorados.

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { PagedResult } from '../../../shared/api';
 import { AtualizarUsuarioRequest, CriarUsuarioRequest, Usuario } from '../model/usuario.model';
@@ -17,12 +17,12 @@ export class UsuarioApi {
     return this.http.get<Usuario>(`${this.url}/${id}`);
   }
 
-  criar(request: CriarUsuarioRequest) {
-    return this.http.post<Usuario>(this.url, request);
+  criar(request: CriarUsuarioRequest, context?: HttpContext) {
+    return this.http.post<Usuario>(this.url, request, { context });
   }
 
-  atualizar(id: string, request: AtualizarUsuarioRequest) {
-    return this.http.put<Usuario>(`${this.url}/${id}`, request);
+  atualizar(id: string, request: AtualizarUsuarioRequest, context?: HttpContext) {
+    return this.http.put<Usuario>(`${this.url}/${id}`, request, { context });
   }
 
   ativar(id: string) {
