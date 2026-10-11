@@ -90,7 +90,7 @@
 - [x] **T16. `features/usuario-toggle-ativo`**
   - Cobre: CA-09
   - Verificação: `npm test`
-- [ ] **T17. `widgets/usuarios-table`**
+- [x] **T17. `widgets/usuarios-table`**
   - Cobre: CA-01
   - Testes: troca de página chama `listar(page, pageSize)`
   - Verificação: `npm test`

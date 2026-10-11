@@ -1,0 +1,36 @@
+<nz-table
+  #tabela
+  [nzData]="itens()"
+  [nzFrontPagination]="false"
+  [nzTotal]="total()"
+  [nzPageIndex]="page()"
+  [nzPageSize]="pageSize()"
+  [nzLoading]="usuarios.isLoading()"
+  nzShowSizeChanger
+  [nzPageSizeOptions]="[10, 20, 50, 100]"
+  (nzQueryParams)="mudarPagina($event)"
+>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>E-mail</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (usuario of tabela.data; track usuario.id) {
+      <tr>
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email }}</td>
+        <td><app-usuario-status-tag [ativo]="usuario.ativo" /></td>
+        <td>
+          <button nz-button nzType="link" [attr.aria-label]="'Editar ' + usuario.nome" (click)="editar.emit(usuario)">
+            Editar
+          </button>
+          <app-usuario-toggle-ativo [usuario]="usuario" (alterado)="recarregar()" />
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
