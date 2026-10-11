@@ -66,7 +66,9 @@
 - [x] **T11. App Angular + NG-ZORRO + layout + proxy**
   - Arquivos: `frontend/` (ng new), `proxy.conf.json`, shell em `app/app.ts`, as pastas FSD com `.gitkeep`
   - Verificação: `npm run build`; `npm start` abre o layout com o menu
-- [ ] **T12. Lint com as regras do FSD**
+- [x] **T12. Lint com as regras do FSD**
+  - Feito: `eslint.config.js` (angular-eslint + `eslint-plugin-boundaries` v7) e `fsd.lint.test.mjs`, um teste permanente
+    com sucesso e falha que roda dentro do `npm run lint` (substitui a verificação manual com import temporário)
   - Arquivos: `eslint.config.js` com `eslint-plugin-boundaries`
   - Testes: **falha:** um import proibido criado temporariamente (`entities` → `features`) faz `npm run lint` falhar; remova-o em seguida
   - Verificação: `npm run lint` verde

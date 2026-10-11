@@ -81,8 +81,10 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
   (`nz-layout` + `nz-menu` lateral alimentado pelo array `menu`).
 - `shared/api/`: `paged-result.ts`, `problem-details.ts` (tipo), `problem-details.interceptor.ts` (`nz-message` para erros ≠ 400)
   e `apply-server-errors.ts` (aplica `errors` do 400 em um `FormGroup`).
-- Lint: `ng add @angular-eslint/schematics` + `eslint-plugin-boundaries`, com os elementos `app`, `pages`, `widgets`,
-  `features`, `entities` e `shared` e a regra "só importa camadas abaixo".
+- Lint: `ng add angular-eslint` + `eslint-plugin-boundaries` (v7, regra `boundaries/dependencies`), com os elementos
+  `app`, `pages`, `widgets`, `features`, `entities` e `shared`; regras "só importa camadas abaixo", "slice não importa
+  slice irmã" e "de fora, só pela API pública (`index.ts`)". Teste de arquitetura do frontend: `fsd.lint.test.mjs`
+  (sucesso e falha, roda no `npm run lint`).
 - Testes: Vitest (padrão do Angular) e Playwright em `frontend/e2e/` (`npm run e2e`).
 - **Usuario:** os passos 1 a 4 da skill `angular-crud`.
 
