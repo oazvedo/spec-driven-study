@@ -1,0 +1,18 @@
+<header class="cabecalho">
+  <h1>Usuários</h1>
+  <button nz-button nzType="primary" (click)="abrir(null)">Novo usuário</button>
+</header>
+
+<app-usuarios-table (editar)="abrir($event)" />
+
+<nz-modal
+  [nzVisible]="modalAberto()"
+  [nzTitle]="emEdicao() ? 'Editar usuário' : 'Novo usuário'"
+  [nzFooter]="null"
+  (nzOnCancel)="fechar()"
+>
+  <!-- O nz-modal recria o conteúdo a cada abertura: o form começa limpo ou com o usuário em edição -->
+  <ng-container *nzModalContent>
+    <app-usuario-form [usuario]="emEdicao()" (salvo)="aoSalvar()" />
+  </ng-container>
+</nz-modal>

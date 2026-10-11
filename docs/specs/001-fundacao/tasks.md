@@ -94,7 +94,7 @@
   - Cobre: CA-01
   - Testes: troca de página chama `listar(page, pageSize)`
   - Verificação: `npm test`
-- [ ] **T18. `pages/usuarios-page` + rota lazy + item de menu**
+- [x] **T18. `pages/usuarios-page` + rota lazy + item de menu** (teste manual na tela ainda não feito; o e2e da T19 cobre o mesmo roteiro)
   - Verificação: `npm run build && npm run lint`; teste manual: cadastrar, editar e inativar pela tela
 
 ## Fase 5: Ponta a ponta e fechamento

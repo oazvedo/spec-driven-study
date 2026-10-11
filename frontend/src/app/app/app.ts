@@ -12,5 +12,5 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  protected readonly menu: { rota: string; titulo: string }[] = [];
+  protected readonly menu: { rota: string; titulo: string }[] = [{ rota: '/usuarios', titulo: 'Usuários' }];
 }
