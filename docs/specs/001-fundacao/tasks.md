@@ -87,7 +87,7 @@
     declarar os status que trata; o interceptor não mostra nz-message para eles. O form declara 409, para o erro de
     e-mail duplicado não aparecer duas vezes (no campo e no nz-message)
   - Verificação: `npm test`
-- [ ] **T16. `features/usuario-toggle-ativo`**
+- [x] **T16. `features/usuario-toggle-ativo`**
   - Cobre: CA-09
   - Verificação: `npm test`
 - [ ] **T17. `widgets/usuarios-table`**
