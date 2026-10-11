@@ -23,7 +23,7 @@ Uma slice não importa outra slice da mesma camada. Toda slice exporta só pelo 
 entities/usuario/
 ├── model/usuario.model.ts
 ├── api/usuario.api.ts
-├── ui/usuario-status-tag.component.ts   # nz-tag Ativo/Inativo (opcional)
+├── ui/usuario-status-tag.ts             # nz-tag Ativo/Inativo (opcional), classe UsuarioStatusTag
 └── index.ts
 ```
 ```ts
@@ -99,6 +99,7 @@ Componente sem estilo na tela = import esquecido.
 
 ## Regras gerais
 - Componentes standalone, `ChangeDetectionStrategy.OnPush`, `inject()` em vez de construtor, `input()` e `output()`.
+- Nomes no padrão do Angular 22: arquivo `usuario-form.ts` e classe `UsuarioForm`, sem o sufixo `.component`/`Component`.
 - Nada de `any`. Os tipos vêm de `entities/*/model`.
 - Só NG-ZORRO para UI. Textos de interface em português (veja a skill `better-writing`) e acessibilidade
   básica: labels, foco e botões com texto (veja a skill `better-accessibility`).

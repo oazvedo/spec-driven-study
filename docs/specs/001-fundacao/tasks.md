@@ -78,7 +78,7 @@
   - Verificação: `npm test`
 
 ## Fase 4: Usuario no frontend (skill `angular-crud`)
-- [ ] **T14. `entities/usuario`** (model, api, status tag)
+- [x] **T14. `entities/usuario`** (model, api, status tag)
   - Verificação: `npm test` (URL e verbo de cada método)
 - [ ] **T15. `features/usuario-form`**
   - Cobre: CA-03, CA-04, CA-05, CA-06 e CA-07 (frontend unit)
