@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { finalize } from 'rxjs';
 import { USUARIO_EMAIL_MAX, USUARIO_NOME_MAX, Usuario, UsuarioApi } from '../../entities/usuario';
 import { ProblemDetails, STATUS_TRATADOS } from '../../shared/api';
@@ -23,6 +24,7 @@ const OBRIGATORIO = { nome: 'O nome é obrigatório.', email: 'O e-mail é obrig
 })
 export class UsuarioForm {
   private readonly api = inject(UsuarioApi);
+  private readonly mensagens = inject(NzMessageService);
 
   readonly usuario = input<Usuario | null>(null);
   readonly salvo = output<Usuario>();
@@ -45,6 +47,8 @@ export class UsuarioForm {
   }
 
   protected salvar(): void {
+    // O nzLoading só bloqueia o clique; um Enter no campo enviaria de novo
+    if (this.salvando()) return;
     if (this.form.invalid) {
       marcarInvalidos(this.form);
       return;
@@ -66,7 +70,9 @@ export class UsuarioForm {
   private mostrarErroDoServidor(erro: HttpErrorResponse): void {
     const problem = (erro.error ?? {}) as ProblemDetails;
     if (erro.status === 400) {
-      applyServerErrors(this.form, problem);
+      // O form declarou tratar o 400: o que não cabe em nenhum campo ele mesmo avisa
+      const semCampo = applyServerErrors(this.form, problem);
+      if (semCampo.length) this.mensagens.error(semCampo.join(' '));
     } else if (erro.status === 409) {
       // O 409 de usuário é sempre e-mail duplicado (RN-02)
       applyServerErrors(this.form, { errors: { email: [problem.detail ?? 'Este e-mail já está em uso.'] } });

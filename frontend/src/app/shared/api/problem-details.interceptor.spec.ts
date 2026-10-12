@@ -55,10 +55,9 @@ describe('problemDetailsInterceptor', () => {
     expect(erro).toBeDefined();
   });
 
-  it('não mostra mensagem para 400: os erros por campo ficam no formulário', () => {
-    const erro = falharCom(400, { errors: { nome: ['O nome é obrigatório.'] } });
+  it('mostra mensagem para 400 quando quem chamou não declarou tratar', () => {
+    falharCom(400, { title: 'Dados inválidos.' });
 
-    expect(mensagens.error).not.toHaveBeenCalled();
-    expect(erro).toBeDefined();
+    expect(mensagens.error).toHaveBeenCalledWith('Dados inválidos.');
   });
 });

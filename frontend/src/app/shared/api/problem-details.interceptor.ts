@@ -5,9 +5,8 @@ import { tap } from 'rxjs';
 import { ProblemDetails } from './problem-details';
 
 // Status HTTP que quem fez a chamada vai tratar na própria tela; para eles o interceptor não mostra nz-message.
-// Padrão: 400, cujos erros por campo vão para o formulário (applyServerErrors).
-// Ex.: o formulário de usuário declara [400, 409] para mostrar o e-mail duplicado no próprio campo.
-export const STATUS_TRATADOS = new HttpContextToken<readonly number[]>(() => [400]);
+// Padrão: nenhum. Ex.: o formulário de usuário declara [400, 409] para mostrar os erros nos próprios campos.
+export const STATUS_TRATADOS = new HttpContextToken<readonly number[]>(() => []);
 
 // Mostra um nz-message para os erros da API que ninguém declarou tratar. O erro segue adiante para quem chamou.
 export const problemDetailsInterceptor: HttpInterceptorFn = (req, next) => {

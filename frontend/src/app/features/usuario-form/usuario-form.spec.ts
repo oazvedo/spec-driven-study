@@ -1,6 +1,7 @@
 import { HttpContext, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NEVER, of, throwError } from 'rxjs';
 import { Usuario, UsuarioApi } from '../../entities/usuario';
 import { STATUS_TRATADOS } from '../../shared/api';
 import { UsuarioForm } from './usuario-form';
@@ -8,13 +9,20 @@ import { UsuarioForm } from './usuario-form';
 describe('UsuarioForm', () => {
   const existente: Usuario = { id: '1', nome: 'Ana', email: 'ana@x.com', ativo: true, createdAt: '2026-10-10T00:00:00Z' };
   const api = { criar: vi.fn(), atualizar: vi.fn() };
+  const mensagens = { error: vi.fn() };
   let fixture: ComponentFixture<UsuarioForm>;
   let salvos: Usuario[];
 
   beforeEach(() => {
     api.criar.mockReset();
     api.atualizar.mockReset();
-    TestBed.configureTestingModule({ providers: [{ provide: UsuarioApi, useValue: api }] });
+    mensagens.error.mockReset();
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: UsuarioApi, useValue: api },
+        { provide: NzMessageService, useValue: mensagens },
+      ],
+    });
     fixture = TestBed.createComponent(UsuarioForm);
     salvos = [];
     fixture.componentInstance.salvo.subscribe((u) => salvos.push(u));
@@ -94,6 +102,27 @@ describe('UsuarioForm', () => {
     enviar();
 
     expect(el().textContent).toContain('O nome é obrigatório.');
+    expect(salvos).toEqual([]);
+  });
+
+  it('com um salvamento em andamento, enviar de novo não chama a API outra vez', () => {
+    api.criar.mockReturnValue(NEVER);
+
+    preencher('Ana', 'ana@x.com');
+    enviar();
+    enviar();
+
+    expect(api.criar).toHaveBeenCalledTimes(1);
+  });
+
+  // Falha: 400 sem campo do form (ex.: corpo malformado) não pode sumir em silêncio
+  it('400 sem campo conhecido mostra a mensagem do servidor', () => {
+    api.criar.mockReturnValue(erroHttp(400, { title: 'Dados inválidos.', errors: { $: ['O JSON enviado não é válido.'] } }));
+
+    preencher('Ana', 'ana@x.com');
+    enviar();
+
+    expect(mensagens.error).toHaveBeenCalledWith('O JSON enviado não é válido.');
     expect(salvos).toEqual([]);
   });
 

@@ -57,13 +57,15 @@ export class UsuarioApi {
   - Usa um `FormGroup` tipado com `nonNullable`, e as validações espelham o validator do backend
     (obrigatório, e-mail, tamanho máximo).
   - Usa `nz-form` + `nz-form-control [nzErrorTip]`, com mensagens em português.
-  - Erro 400 do servidor: `applyServerErrors` (de `shared/forms`) aplica os `errors` do ProblemDetails nos controles.
-    Erro 409: o mesmo helper, montando o erro no campo único (no usuário, o e-mail).
+  - Erro 400 do servidor: `applyServerErrors` (de `shared/forms`) aplica os `errors` do ProblemDetails nos controles
+    e devolve as mensagens que não couberam em nenhum campo. Mostre essas mensagens com `NzMessageService.error`,
+    senão o erro some em silêncio. Erro 409: o mesmo helper, montando o erro no campo único (no usuário, o e-mail).
   - A chamada à API envia um `HttpContext` com `STATUS_TRATADOS` = `[400, 409]`, para o interceptor não repetir
     em `nz-message` o erro que o formulário já mostra no campo.
   - Submit com form inválido: `marcarInvalidos(form)` (de `shared/forms`). O `markAllAsTouched` sozinho não faz
     o `nz-form-control` exibir o erro.
-  - O botão salvar fica `nzLoading` enquanto a requisição está em andamento.
+  - O botão salvar fica `nzLoading` enquanto a requisição está em andamento, e `salvar()` começa com
+    `if (this.salvando()) return;`. O `nzLoading` só bloqueia o clique; um Enter no campo enviaria de novo.
 - **`features/usuario-toggle-ativo/`**: um `nz-switch` ou botão que chama `ativar` ou `inativar`,
   com confirmação via `nz-popconfirm` ao inativar. Emite `alterado = output<void>()`.
 

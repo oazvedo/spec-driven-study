@@ -81,7 +81,7 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
   `app.routes.ts` (redireciona `''` → `usuarios`) e o shell no próprio componente raiz `app.ts`
   (`nz-layout` + `nz-menu` lateral alimentado pelo array `menu`).
 - `shared/api/`: `paged-result.ts`, `problem-details.ts` (tipo) e `problem-details.interceptor.ts` (`nz-message` para os erros,
-  exceto os status em `STATUS_TRATADOS`, padrão 400).
+  exceto os status em `STATUS_TRATADOS`, que quem chama declara; padrão: nenhum).
 - `shared/forms/`: `apply-server-errors.ts` (aplica `errors` do 400 em um `FormGroup`) e `mark-invalid.ts`
   (`marcarInvalidos`, para o `nz-form-control` exibir os erros no submit).
 - Lint: `ng add angular-eslint` + `eslint-plugin-boundaries` (v7, regra `boundaries/dependencies`), com os elementos
@@ -106,7 +106,7 @@ Nos testes de integração, a fixture aplica as migrations (`ApplyMigrationsAsyn
 | CA-04 | E2E | `submeter formulário vazio mostra erros e não cria` |
 | CA-05 | Unidade | `CriarUsuarioRequestValidator_EmailInvalido_Falha` |
 | CA-06 | Unidade | `CriarAsync_EmailDuplicado_LancaConflictException` · `Usuario_EmailComMaiusculas_GuardaEmMinusculas` |
-| CA-06 | Integração | `Commit_EmailDuplicado_LancaDbUpdateException` |
+| CA-06 | Integração | `Commit_EmailDuplicado_LancaConflictException` (T10b) |
 | CA-06 | Funcional | `Criar_EmailDuplicado_Retorna409` (mesma caixa e outra caixa) |
 | CA-07 | Funcional | `Atualizar_RequestValido_Retorna200ComDadosNovos` |
 | CA-08 | Unidade | `ObterAsync_IdInexistente_LancaNotFoundException` |

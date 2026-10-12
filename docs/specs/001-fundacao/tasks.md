@@ -126,9 +126,12 @@
     "O JSON enviado não é válido.". Sem o `[Required]` implícito: campo ausente chega ao FluentValidation (mensagem em PT)
   - Testes: funcional: `page=abc` → 400 com mensagem em português; **falha:** JSON malformado → 400 em português
   - Verificação: `dotnet test backend`
-- [ ] **T23. `usuario-form`: sem envio duplo e com retorno em todo 400**
+- [x] **T23. `usuario-form`: sem envio duplo e com retorno em todo 400**
   - Problema: Enter durante o salvamento manda um segundo POST/PUT; um 400 sem `nome`/`email` no `errors`
     não mostra nada (o interceptor fica quieto e o form ignora as chaves)
+  - Feito: guarda `if (this.salvando()) return;`. `applyServerErrors` devolve as mensagens sem campo e o form as mostra
+    no nz-message. O padrão de `STATUS_TRATADOS` passou de `[400]` para `[]`: os 400 de chamadas sem formulário
+    voltam a aparecer. Skill `angular-crud` atualizada com as duas regras
   - Testes: salvar com uma requisição em andamento não chama a API de novo; **falha:** 400 sem campo conhecido mostra uma mensagem
   - Verificação: `npm test`
 - [ ] **T24. Depois de cadastrar, a tabela volta para a página 1**
