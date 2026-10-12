@@ -134,7 +134,9 @@
     voltam a aparecer. Skill `angular-crud` atualizada com as duas regras
   - Testes: salvar com uma requisição em andamento não chama a API de novo; **falha:** 400 sem campo conhecido mostra uma mensagem
   - Verificação: `npm test`
-- [ ] **T24. Depois de cadastrar, a tabela volta para a página 1**
+- [x] **T24. Depois de cadastrar, a tabela volta para a página 1**
   - Problema: a listagem mostra os mais recentes primeiro (RN-05); quem está na página 3 cadastra e não vê o novo usuário
-  - Testes: `irParaPrimeiraPagina` (ou equivalente) leva a tabela à página 1; editar mantém a página
+  - Feito: `UsuariosTable.irParaPrimeiraPagina()`; a página usa esse método ao criar e `recarregar()` ao editar.
+    Regra registrada na skill `angular-crud`
+  - Testes: `irParaPrimeiraPagina` leva a tabela à página 1 (e recarrega se já estiver nela); `recarregar` mantém a página
   - Verificação: `npm test && npm run e2e`

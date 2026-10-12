@@ -31,6 +31,12 @@ export class UsuariosTable {
     this.usuarios.reload();
   }
 
+  // Depois de cadastrar: o novo usuário está na página 1 (RN-05, mais recentes primeiro)
+  irParaPrimeiraPagina(): void {
+    if (this.page() === 1) this.recarregar();
+    else this.page.set(1);
+  }
+
   protected mudarPagina({ pageIndex, pageSize }: NzTableQueryParams): void {
     this.page.set(pageIndex);
     this.pageSize.set(pageSize);

@@ -17,6 +17,16 @@ describe('UsuariosTable', () => {
   async function renderizar(): Promise<void> {
     TestBed.configureTestingModule({ providers: [{ provide: UsuarioApi, useValue: api }] });
     fixture = TestBed.createComponent(UsuariosTable);
+    await estabilizar();
+  }
+
+  async function irParaPagina(pageIndex: number, pageSize: number): Promise<void> {
+    const tabela = fixture.debugElement.query(By.directive(NzTableComponent)).componentInstance as NzTableComponent<Usuario>;
+    tabela.nzQueryParams.emit({ pageIndex, pageSize, sort: [], filter: [] } as NzTableQueryParams);
+    await estabilizar();
+  }
+
+  async function estabilizar(): Promise<void> {
     fixture.detectChanges();
     await fixture.whenStable();
   }
@@ -42,12 +52,41 @@ describe('UsuariosTable', () => {
   it('trocar de página busca a página nova no servidor', async () => {
     await renderizar();
 
-    const tabela = fixture.debugElement.query(By.directive(NzTableComponent)).componentInstance as NzTableComponent<Usuario>;
-    tabela.nzQueryParams.emit({ pageIndex: 2, pageSize: 50, sort: [], filter: [] } as NzTableQueryParams);
-    fixture.detectChanges();
-    await fixture.whenStable();
+    await irParaPagina(2, 50);
 
     expect(api.listar).toHaveBeenLastCalledWith(2, 50);
+  });
+
+  it('irParaPrimeiraPagina volta para a página 1 mantendo o tamanho da página', async () => {
+    await renderizar();
+    await irParaPagina(3, 50);
+
+    fixture.componentInstance.irParaPrimeiraPagina();
+    await estabilizar();
+
+    expect(api.listar).toHaveBeenLastCalledWith(1, 50);
+  });
+
+  it('irParaPrimeiraPagina já na página 1 busca a lista de novo', async () => {
+    await renderizar();
+    api.listar.mockClear();
+
+    fixture.componentInstance.irParaPrimeiraPagina();
+    await estabilizar();
+
+    expect(api.listar).toHaveBeenCalledWith(1, 20);
+  });
+
+  // Editar recarrega sem sair da página atual
+  it('recarregar mantém a página atual', async () => {
+    await renderizar();
+    await irParaPagina(2, 20);
+    api.listar.mockClear();
+
+    fixture.componentInstance.recarregar();
+    await estabilizar();
+
+    expect(api.listar).toHaveBeenCalledWith(2, 20);
   });
 
   it('clicar em Editar emite o usuário da linha', async () => {
@@ -66,8 +105,7 @@ describe('UsuariosTable', () => {
     api.listar.mockClear();
 
     fixture.debugElement.query(By.directive(UsuarioToggleAtivo)).componentInstance.alterado.emit();
-    fixture.detectChanges();
-    await fixture.whenStable();
+    await estabilizar();
 
     expect(api.listar).toHaveBeenCalledWith(1, 20);
   });

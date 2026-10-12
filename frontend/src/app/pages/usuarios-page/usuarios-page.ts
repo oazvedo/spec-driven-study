@@ -31,8 +31,11 @@ export class UsuariosPage {
   }
 
   protected aoSalvar(): void {
-    this.mensagens.success(this.emEdicao() ? 'Usuário atualizado.' : 'Usuário cadastrado.');
+    const editando = this.emEdicao() !== null;
+    this.mensagens.success(editando ? 'Usuário atualizado.' : 'Usuário cadastrado.');
     this.fechar();
-    this.tabela().recarregar();
+    // Quem edita continua na página em que estava; quem cadastra vai ver o novo usuário na página 1
+    if (editando) this.tabela().recarregar();
+    else this.tabela().irParaPrimeiraPagina();
   }
 }

@@ -74,13 +74,15 @@ export class UsuarioApi {
   `[nzPageSize]` e `(nzQueryParams)` para trocar de página.
 - Estado com signals: `page` e `pageSize` como `signal`, e os dados com
   `rxResource({ params: () => ({ page: page(), pageSize: pageSize() }), stream: ({ params }) => api.listar(params.page, params.pageSize) })`.
-- `[nzLoading]` ligado ao status do resource, e um método `recarregar()` público.
+- `[nzLoading]` ligado ao status do resource, e os métodos públicos `recarregar()` (mesma página) e
+  `irParaPrimeiraPagina()` (volta à página 1; se já estiver nela, recarrega).
 - Colunas: nome, e-mail, status (`usuario-status-tag`) e ações (editar + `usuario-toggle-ativo`).
 - Emite `editar = output<Usuario>()`. O widget não abre o modal; quem decide é a página.
 
 ### 4. `pages/usuarios-page/` + rota lazy
 - Compõe `usuarios-table` + `usuario-form` dentro de um `nz-modal` (criar ou editar).
-- Depois de `salvo`: fecha o modal, mostra `nz-message` de sucesso e chama `recarregar()` da tabela.
+- Depois de `salvo`: fecha o modal e mostra `nz-message` de sucesso. Ao editar, chama `recarregar()` da tabela;
+  ao criar, `irParaPrimeiraPagina()`, porque a lista vem do mais recente para o mais antigo e o novo registro está na página 1.
 - Rota em `app/app.routes.ts`:
   ```ts
   { path: 'usuarios', loadComponent: () => import('../pages/usuarios-page').then(m => m.UsuariosPage) }
@@ -92,7 +94,7 @@ export class UsuarioApi {
 |---|---|
 | `entities/usuario/api/*.spec.ts` (Vitest + `HttpTestingController`) | Cada método chama a URL e o verbo certos. |
 | `features/usuario-form/*.spec.ts` | **Sucesso:** form válido chama `criar` e emite `salvo`. **Falha:** form vazio não chama a API e mostra erros; um 400 do servidor exibe o erro no campo. |
-| `widgets/usuarios-table/*.spec.ts` | Trocar de página chama `listar` com `page` e `pageSize` novos. |
+| `widgets/usuarios-table/*.spec.ts` | Trocar de página chama `listar` com `page` e `pageSize` novos. Na página N, `irParaPrimeiraPagina()` chama `listar(1, pageSize)`. |
 | `e2e/usuarios.spec.ts` (Playwright) | **Sucesso:** cadastrar usuário e vê-lo na tabela. **Falha:** submeter vazio mostra erros e não cria registro. Opcional: inativar e ver a tag mudar. |
 
 ## CSS do NG-ZORRO: só o que se usa
