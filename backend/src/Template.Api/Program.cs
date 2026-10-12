@@ -10,7 +10,10 @@ builder.Services
     .AddApplication()
     .AddInfra(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(MensagensDeBinding.EmPortugues)
+    .ConfigureApiBehaviorOptions(o => o.InvalidModelStateResponseFactory = MensagensDeBinding.RespostaDeErro)
+    // JSON malformado: não expõe a mensagem do parser (em inglês); o texto vem do MensagensDeBinding
+    .AddJsonOptions(o => o.AllowInputFormatterExceptionMessages = false);
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddOpenApi();

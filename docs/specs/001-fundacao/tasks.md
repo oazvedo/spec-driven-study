@@ -119,9 +119,12 @@
     quando o cliente aborta (comentário no `GlobalExceptionHandler`)
   - Testes: funcional `Listar_PaginaMaxima_Retorna200Vazio` (falha sem a correção)
   - Verificação: `dotnet test backend`
-- [ ] **T22. Erros de binding em português (ADR 0006)**
+- [x] **T22. Erros de binding em português (ADR 0006)**
   - Problema: `GET /api/usuarios?page=abc` → 400 com título e mensagem em inglês
-  - Testes: funcional: `page=abc` → 400 com mensagem em português
+  - Feito: `Api/ErrorHandling/MensagensDeBinding.cs` traduz o `ModelBindingMessageProvider` e monta o 400 do `[ApiController]`
+    (`InvalidModelStateResponseFactory`) com o mesmo título do `GlobalExceptionHandler`. JSON malformado vira
+    "O JSON enviado não é válido.". Sem o `[Required]` implícito: campo ausente chega ao FluentValidation (mensagem em PT)
+  - Testes: funcional: `page=abc` → 400 com mensagem em português; **falha:** JSON malformado → 400 em português
   - Verificação: `dotnet test backend`
 - [ ] **T23. `usuario-form`: sem envio duplo e com retorno em todo 400**
   - Problema: Enter durante o salvamento manda um segundo POST/PUT; um 400 sem `nome`/`email` no `errors`

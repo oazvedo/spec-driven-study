@@ -11,6 +11,9 @@ namespace Template.Api.ErrorHandling;
 // Requisição abortada pelo cliente não chega aqui: o UseExceptionHandler já responde 499 e só loga em Debug.
 public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
 {
+    // Também usado nos 400 do binding (MensagensDeBinding), para o frontend ver um título só
+    public const string TituloValidacao = "Dados inválidos.";
+
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var problem = ParaProblemDetails(exception);
@@ -31,7 +34,7 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService
         ValidationException e => new ValidationProblemDetails(ErrosPorCampo(e))
         {
             Status = StatusCodes.Status400BadRequest,
-            Title = "Dados inválidos."
+            Title = TituloValidacao
         },
         NotFoundException e => new ProblemDetails
         {

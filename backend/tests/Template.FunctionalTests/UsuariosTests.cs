@@ -70,6 +70,31 @@ public class UsuariosTests(ApiFactory factory) : IAsyncLifetime
         pagina.TotalCount.Should().Be(1);
     }
 
+    // ADR 0006: o que falha no binding (antes do service) também responde em português
+    [Fact]
+    public async Task Listar_PageNaoNumerico_Retorna400EmPortugues()
+    {
+        var response = await _client.GetAsync($"{Url}?page=abc", Ct);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(Ct);
+        problem!.Title.Should().Be("Dados inválidos.");
+        problem.Errors["page"].Should().Equal("O valor 'abc' não é válido.");
+    }
+
+    [Fact]
+    public async Task Criar_JsonMalformado_Retorna400EmPortugues()
+    {
+        using var corpo = new StringContent("{oops", System.Text.Encoding.UTF8, "application/json");
+
+        var response = await _client.PostAsync(Url, corpo, Ct);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(Ct);
+        problem!.Title.Should().Be("Dados inválidos.");
+        problem.Errors.Values.SelectMany(x => x).Should().Equal("O JSON enviado não é válido.");
+    }
+
     // CA-03
     [Fact]
     public async Task Criar_RequestValido_Retorna201ComLocation()
