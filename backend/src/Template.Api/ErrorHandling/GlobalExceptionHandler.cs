@@ -8,6 +8,7 @@ namespace Template.Api.ErrorHandling;
 
 // Converte as exceções conhecidas em ProblemDetails (ADR 0006).
 // As demais seguem para o handler padrão, que responde 500 sem expor detalhes.
+// Requisição abortada pelo cliente não chega aqui: o UseExceptionHandler já responde 499 e só loga em Debug.
 public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)

@@ -58,6 +58,18 @@ public class UsuariosTests(ApiFactory factory) : IAsyncLifetime
         problem!.Errors.Should().ContainKey(campo);
     }
 
+    // (page - 1) * pageSize passaria do int: a página além do fim volta vazia, sem 500
+    [Fact]
+    public async Task Listar_PaginaMaxima_Retorna200Vazio()
+    {
+        await CriarAsync();
+
+        var pagina = await _client.GetFromJsonAsync<PagedResult<UsuarioResponse>>($"{Url}?page={int.MaxValue}", Ct);
+
+        pagina!.Items.Should().BeEmpty();
+        pagina.TotalCount.Should().Be(1);
+    }
+
     // CA-03
     [Fact]
     public async Task Criar_RequestValido_Retorna201ComLocation()

@@ -23,10 +23,14 @@ public abstract class RepositoryBase<T>(AppDbContext context) : IRepositoryBase<
             .ThenByDescending(x => x.Id);
 
         var total = await query.CountAsync(cancellationToken);
-        var items = await query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync(cancellationToken);
+        // Em long, page grande não estoura o int. Página além do fim volta vazia sem consultar de novo.
+        var pular = (long)(page - 1) * pageSize;
+        var items = pular >= total
+            ? []
+            : await query
+                .Skip((int)pular)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
 
         return new PagedResult<T>(items, page, pageSize, total);
     }
