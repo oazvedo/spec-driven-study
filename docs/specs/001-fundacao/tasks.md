@@ -98,7 +98,9 @@
   - Verificação: `npm run build && npm run lint`; teste manual: cadastrar, editar e inativar pela tela
 
 ## Fase 5: Ponta a ponta e fechamento
-- [ ] **T19. Playwright + e2e de usuários**
+- [x] **T19. Playwright + e2e de usuários**
+  - Feito: o `playwright.config.ts` sobe a API e o `ng serve` (ou reaproveita os que já estão rodando).
+    No WSL, o Chromium precisa das libs do sistema, instaladas uma vez com `sudo env "PATH=$PATH" npx playwright install-deps chromium`
   - Cobre: CA-03 e CA-04 (e2e)
   - Testes: cadastrar e ver na tabela; **falha:** formulário vazio mostra erros e não cria nada
   - Verificação: `npm run e2e` (com `docker compose up -d` e a API rodando)
