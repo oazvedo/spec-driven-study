@@ -29,6 +29,27 @@ ideia ──► spec.md ──► plan.md ──► tasks.md ──► implement
 | `docs/learning/` | Diário de estudos |
 | `backend/`, `frontend/` | Código (criado pela spec 001) |
 
+## Comandos
+Pré-requisitos: Docker (com a integração WSL ligada, se estiver no Windows), .NET 10 SDK e Node.
+
+```bash
+docker compose up -d                            # Postgres
+dotnet tool restore                             # dotnet-ef local, uma vez por clone
+
+# Backend: aplica as migrations ao subir; documentação em http://localhost:5000/scalar
+dotnet run --project backend/src/Template.Api
+dotnet build backend && dotnet test backend     # unidade, integração, funcional e arquitetura
+
+# Frontend: http://localhost:4200 (proxy de /api para a API)
+cd frontend && npm install
+npm start
+npm test && npm run lint                        # Vitest e lint (inclui as regras do FSD)
+npm run e2e                                     # Playwright: sobe a API e o ng serve se não estiverem rodando
+```
+
+Para o e2e rodar no Linux/WSL, instale uma vez o Chromium e as bibliotecas do sistema:
+`npx playwright install chromium && sudo env "PATH=$PATH" npx playwright install-deps chromium`.
+
 ## Stack
 .NET 10, ASP.NET Core (Controllers), EF Core, PostgreSQL, FluentValidation, xUnit, Testcontainers,
 Angular, NG-ZORRO, Vitest e Playwright.

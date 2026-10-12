@@ -104,12 +104,12 @@
   - Cobre: CA-03 e CA-04 (e2e)
   - Testes: cadastrar e ver na tabela; **falha:** formulário vazio mostra erros e não cria nada
   - Verificação: `npm run e2e` (com `docker compose up -d` e a API rodando)
-- [ ] **T20. Fechamento**
+- [x] **T20. Fechamento**
   - Atualizar a seção de comandos do `README.md`, rodar a skill `code-review` na spec, conferir a cobertura de todos os CAs,
     marcar a spec como `Concluída` e registrar com a skill `study-log`
   - Verificação: `dotnet test backend && cd frontend && npm run lint && npm test && npm run e2e`
-  - Feito até aqui: README, code-review, cobertura dos CAs (plan.md atualizado com o teste da T10b) e study-log.
-    Falta marcar a spec como `Concluída`, depois das T21 a T24
+  - Feito: README, code-review (os achados viraram as T21 a T24), cobertura dos CAs (plan.md atualizado com o teste da T10b),
+    study-log e spec `Concluída`. Verificação final: backend 71/71, frontend 39/39, lint e e2e 2/2 verdes
 
 ## Fase 6: Ajustes do code-review (descobertos na T20)
 - [x] **T21. Paginação sem overflow**

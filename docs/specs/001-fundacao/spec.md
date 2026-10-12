@@ -1,6 +1,6 @@
 # 001. Fundação: Spec
 
-- **Status:** Aprovada
+- **Status:** Concluída
 - **Data:** 2026-10-10
 
 ## Problema
