@@ -11,6 +11,7 @@ public static class ApplicationModule
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IEnderecoService, EnderecoService>();
         services.AddValidatorsFromAssembly(typeof(ApplicationModule).Assembly);
         return services;
     }

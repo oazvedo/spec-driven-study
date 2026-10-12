@@ -14,6 +14,10 @@ public abstract class RepositoryBase<T>(AppDbContext context) : IRepositoryBase<
     public Task<T?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken)
         => Set.FindAsync([id], cancellationToken).AsTask();
 
+    // SELECT EXISTS pela PK: não carrega nem rastreia a entidade
+    public Task<bool> ExisteAsync(Guid id, CancellationToken cancellationToken)
+        => Set.AnyAsync(x => x.Id == id, cancellationToken);
+
     public async Task<PagedResult<T>> ListarPaginadoAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
         // Id desempata registros salvos no mesmo commit (mesmo CreatedAt) e mantém a paginação estável.

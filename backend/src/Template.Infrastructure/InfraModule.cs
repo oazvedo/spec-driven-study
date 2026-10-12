@@ -18,6 +18,7 @@ public static class InfraModule
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 
         services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
