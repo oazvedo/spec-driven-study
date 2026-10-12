@@ -108,3 +108,27 @@
   - Atualizar a seção de comandos do `README.md`, rodar a skill `code-review` na spec, conferir a cobertura de todos os CAs,
     marcar a spec como `Concluída` e registrar com a skill `study-log`
   - Verificação: `dotnet test backend && cd frontend && npm run lint && npm test && npm run e2e`
+  - Feito até aqui: README, code-review, cobertura dos CAs (plan.md atualizado com o teste da T10b) e study-log.
+    Falta marcar a spec como `Concluída`, depois das T21 a T24
+
+## Fase 6: Ajustes do code-review (descobertos na T20)
+- [x] **T21. Paginação sem overflow**
+  - Problema: `page=2147483647` estoura `int` em `(page - 1) * pageSize` → OFFSET negativo → 500
+  - Feito: o `RepositoryBase` calcula o deslocamento em `long`. A página além do fim volta vazia (200) sem a segunda consulta.
+    O achado "cancelamento vira 500" era falso: o `UseExceptionHandler` do .NET 8+ já responde 499 e só loga em Debug
+    quando o cliente aborta (comentário no `GlobalExceptionHandler`)
+  - Testes: funcional `Listar_PaginaMaxima_Retorna200Vazio` (falha sem a correção)
+  - Verificação: `dotnet test backend`
+- [ ] **T22. Erros de binding em português (ADR 0006)**
+  - Problema: `GET /api/usuarios?page=abc` → 400 com título e mensagem em inglês
+  - Testes: funcional: `page=abc` → 400 com mensagem em português
+  - Verificação: `dotnet test backend`
+- [ ] **T23. `usuario-form`: sem envio duplo e com retorno em todo 400**
+  - Problema: Enter durante o salvamento manda um segundo POST/PUT; um 400 sem `nome`/`email` no `errors`
+    não mostra nada (o interceptor fica quieto e o form ignora as chaves)
+  - Testes: salvar com uma requisição em andamento não chama a API de novo; **falha:** 400 sem campo conhecido mostra uma mensagem
+  - Verificação: `npm test`
+- [ ] **T24. Depois de cadastrar, a tabela volta para a página 1**
+  - Problema: a listagem mostra os mais recentes primeiro (RN-05); quem está na página 3 cadastra e não vê o novo usuário
+  - Testes: `irParaPrimeiraPagina` (ou equivalente) leva a tabela à página 1; editar mantém a página
+  - Verificação: `npm test && npm run e2e`
