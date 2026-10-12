@@ -13,7 +13,11 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder(BancoDeTeste.ImagemPostgres).Build();
 
-    public async ValueTask InitializeAsync() => await _postgres.StartAsync();
+    public async ValueTask InitializeAsync()
+    {
+        await _postgres.StartAsync();
+        StartServer(); // sobe a API (e aplica as migrations) uma vez, antes dos testes rodarem em paralelo
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
         => builder.UseSetting("ConnectionStrings:Default", _postgres.GetConnectionString());
