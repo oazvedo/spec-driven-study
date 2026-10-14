@@ -27,3 +27,4 @@ Formato MADR enxuto ([template.md](template.md)). Para criar um novo, use a skil
 | [0013](0013-migrations-automaticas-na-inicializacao.md) | Migrations aplicadas automaticamente na inicialização | Aceito |
 | [0014](0014-awesomeassertions-no-lugar-de-fluentassertions.md) | AwesomeAssertions no lugar de FluentAssertions | Aceito |
 | [0015](0015-remocao-fisica-no-repositorio.md) | Remoção física disponível no repositório | Aceito |
+| [0016](0016-delete-na-api-para-entidades-sem-historico.md) | DELETE na API para entidades sem histórico | Aceito |

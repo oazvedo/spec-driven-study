@@ -16,4 +16,5 @@ Para criar: skill `spec`. Para implementar: skill `implement-task`. Templates em
 | # | Spec | Status |
 |---|---|---|
 | 001 | [Fundação: esqueleto completo com CRUD de Usuário](001-fundacao/spec.md) | Concluída |
-| 002 | Autenticação (JWT) e autorização por permissão (`[HasPermission]`, ADR 0012) | A escrever |
+| 002 | [Endereço: CRUD de endereços dos usuários](002-endereco/spec.md) | Aprovada |
+| 003 | Autenticação (JWT) e autorização por permissão (`[HasPermission]`, ADR 0012) | A escrever |

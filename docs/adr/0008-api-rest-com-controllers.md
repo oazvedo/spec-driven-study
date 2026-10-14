@@ -1,6 +1,6 @@
 # 0008. API REST com Controllers
 
-- **Status:** Aceito
+- **Status:** Aceito (a regra "Sem `DELETE`" foi substituída pelo [ADR 0016](0016-delete-na-api-para-entidades-sem-historico.md))
 - **Data:** 2026-10-10
 
 ## Contexto
@@ -68,7 +68,7 @@ public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
     }
 }
 ```
-Quando a spec 002 for implementada, cada ação ganha `[HasPermission("<recurso>.visualizar|editar")]` (ADR 0012).
+Quando a spec 003 for implementada, cada ação ganha `[HasPermission("<recurso>.visualizar|editar")]` (ADR 0012).
 
 - **Documentação da API:** o documento OpenAPI é gerado pelo `Microsoft.AspNetCore.OpenApi` (nativo, em `/openapi/v1.json`),
   e a interface de documentação é o **Scalar** (`Scalar.AspNetCore`, em `/scalar`). Os dois ficam disponíveis só em Development:

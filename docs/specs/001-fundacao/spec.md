@@ -51,7 +51,7 @@ editar, ativar e inativar). Esse cadastro é a entidade de referência que as pr
 - **CA-10:** Quando o operador consulta a saúde do sistema com o banco disponível, então recebe a confirmação de que está saudável.
 
 ## Fora de escopo
-- Login, senha e permissões (spec 002).
+- Login, senha e permissões (spec 003).
 - Busca, filtros e ordenação escolhida pelo usuário.
 - Exclusão definitiva de registros.
 - Deploy, CI e ambientes além do local.

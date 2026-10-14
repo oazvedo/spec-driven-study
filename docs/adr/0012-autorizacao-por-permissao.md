@@ -20,7 +20,7 @@ Os endpoints precisam de controle de acesso granular por recurso e ação, e nã
   um `IAuthorizationPolicyProvider` que cria a policy sob demanda e um `AuthorizationHandler`
   que verifica a claim `permission` do token.
 - Sem a permissão, a resposta é 403. Sem token, 401. Os dois em ProblemDetails.
-- Os detalhes (de onde vêm as permissões, login e refresh) serão definidos no `plan.md` da spec 002.
+- Os detalhes (de onde vêm as permissões, login e refresh) serão definidos no `plan.md` da spec 003.
 
 ## Alternativas consideradas
 - **Roles (`[Authorize(Roles = ...)]`):** grosseiras demais. Mudar o acesso exigiria mudar o código.
@@ -28,4 +28,4 @@ Os endpoints precisam de controle de acesso granular por recurso e ação, e nã
 
 ## Consequências
 - ✅ O controle de acesso fica declarativo e visível em cada endpoint.
-- ⚠️ Até a spec 002, a API fica **sem autenticação**. Ela não deve ser exposta fora do ambiente local.
+- ⚠️ Até a spec 003, a API fica **sem autenticação**. Ela não deve ser exposta fora do ambiente local.

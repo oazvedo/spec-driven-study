@@ -32,8 +32,8 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 - **Backend:** Clean Architecture com Domain, Application, Infrastructure e Api (ADR 0003). DI só em
   `ApplicationModule.cs` e `InfraModule.cs` (ADR 0003). Repository + UnitOfWork + `PagedResult<T>` (ADR 0004).
   PostgreSQL + EF Core com uma `XxxConfig` por entidade (ADR 0005). FluentValidation + ProblemDetails (ADR 0006).
-  DTOs com mapeamento manual (ADR 0007). Controllers REST em `/api/<recurso>`, sem DELETE, documentação
-  com Scalar em `/scalar` (ADR 0008). As migrations são aplicadas automaticamente quando a API inicia (ADR 0013).
+  DTOs com mapeamento manual (ADR 0007). Controllers REST em `/api/<recurso>`, sem DELETE (exceção justificada
+  no `plan.md`, ADR 0016), documentação com Scalar em `/scalar` (ADR 0008). As migrations são aplicadas automaticamente quando a API inicia (ADR 0013).
 - **Frontend:** Angular com Feature-Sliced Design + NG-ZORRO (ADR 0009).
 - **Testes:** unidade, integração, funcional, e2e e arquitetura, sempre com um cenário de sucesso
   e um de falha (ADR 0010).

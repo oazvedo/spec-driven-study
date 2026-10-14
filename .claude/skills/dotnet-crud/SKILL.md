@@ -53,8 +53,9 @@ public interface IUsuarioRepository : IRepositoryBase<Usuario>
 ```
 Só consultas **específicas** da entidade. O CRUD básico já vem de `IRepositoryBase<T>`
 (`ObterPorIdAsync`, `ListarPaginadoAsync`, `AdicionarAsync`, `Atualizar` e `Remover`).
-O `Remover` faz remoção física e só deve ser usado se o `plan.md` justificar. A API não expõe `DELETE`; o padrão
-continua sendo ativar e inativar (ADRs 0008 e 0015).
+O `Remover` faz remoção física e só deve ser usado se o `plan.md` justificar. O padrão continua sendo
+ativar e inativar; a API só expõe `DELETE` (ação `Excluir`, 204) quando o `plan.md` justificar que a entidade
+não tem valor histórico (ADRs 0008, 0015 e 0016).
 
 ### 3. Infrastructure: configuração (`Template.Infrastructure/Data/Configurations/UsuarioConfig.cs`)
 ```csharp
@@ -231,6 +232,7 @@ services.AddScoped<IUsuarioService, UsuarioService>();
 Copie o controller de referência do **ADR 0008**: `[Route("api/<recurso-plural>")]`, as 6 ações
 (`Listar`, `Obter`, `Criar`, `Atualizar`, `Ativar`, `Inativar`), `[Range]` em `page` e `pageSize`,
 `CreatedAtAction(nameof(Obter))` no `Criar` e `NoContent()` em ativar e inativar.
+Se o `plan.md` justificar o `DELETE` (ADR 0016), acrescente a ação `Excluir`, também com `NoContent()`.
 Nenhuma lógica no controller. Quando o ADR 0012 estiver implementado, adicione `[HasPermission]` em cada ação.
 
 ### 11. Testes: **sucesso e falha em cada nível** (ADR 0010)
