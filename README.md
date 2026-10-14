@@ -1,4 +1,4 @@
-# template-crud-skills
+# spec-driven-study
 
 Base de estudos para construir um CRUD em **C# (.NET 10) + Angular** usando IA de forma disciplinada:
 toda mudança nasce de uma **spec**, toda decisão técnica vira um **ADR**, e a IA segue **skills**
