@@ -10,6 +10,7 @@ describe('EnderecoExcluir', () => {
   const endereco: Endereco = {
     id: '1',
     usuarioId: 'u1',
+    usuarioNome: 'Ana',
     logradouro: 'Av. Paulista',
     numero: '1000',
     complemento: null,

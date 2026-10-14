@@ -135,6 +135,18 @@ public class UsuarioRepositoryTests(PostgresFixture fixture) : IAsyncLifetime
         (await NoEscopo((repo, _) => repo.ExisteEmailAsync("ana@x.com", usuario.Id, Ct))).Should().BeFalse();
     }
 
+    // Spec 002 (T08b): nomes para o EnderecoResponse; id inexistente fica de fora
+    [Fact]
+    public async Task ObterNomesAsync_IdsExistentesEInexistente_DevolveSoOsExistentes()
+    {
+        var ana = await SalvarAsync(new Usuario("Ana", "ana@x.com"));
+        var bia = await SalvarAsync(new Usuario("Bia", "bia@x.com"));
+
+        var nomes = await NoEscopo((repo, _) => repo.ObterNomesAsync([ana.Id, bia.Id, Guid.NewGuid()], Ct));
+
+        nomes.Should().BeEquivalentTo(new Dictionary<Guid, string> { [ana.Id] = "Ana", [bia.Id] = "Bia" });
+    }
+
     // CA-06 (falha): o índice único barra e-mail duplicado mesmo sem passar pela checagem do service
     // (caso de requisições simultâneas), e o UnitOfWork traduz para ConflictException (409)
     [Fact]

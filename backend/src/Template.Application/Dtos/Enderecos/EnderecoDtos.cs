@@ -21,11 +21,11 @@ public record CriarEnderecoRequest(Guid UsuarioId, string Logradouro, string Num
 
 public record AtualizarEnderecoRequest(Guid UsuarioId, string Logradouro, string Numero, string? Complemento, string Bairro, string Cidade, string Estado, string Cep, EnderecoTipo Tipo) : IEnderecoRequest;
 
-public record EnderecoResponse(Guid Id, Guid UsuarioId, string Logradouro, string Numero, string? Complemento, string Bairro, string Cidade, string Estado, string Cep, EnderecoTipo Tipo, bool Ativo, DateTime CreatedAt);
+public record EnderecoResponse(Guid Id, Guid UsuarioId, string UsuarioNome, string Logradouro, string Numero, string? Complemento, string Bairro, string Cidade, string Estado, string Cep, EnderecoTipo Tipo, bool Ativo, DateTime CreatedAt);
 
 // Mapeamento manual (ADR 0007)
 public static class EnderecoMappings
 {
-    public static EnderecoResponse ToResponse(this Endereco e)
-        => new(e.Id, e.UsuarioId, e.Logradouro, e.Numero, e.Complemento, e.Bairro, e.Cidade, e.Estado, e.Cep, e.Tipo, e.Ativo, e.CreatedAt);
+    public static EnderecoResponse ToResponse(this Endereco e, string usuarioNome)
+        => new(e.Id, e.UsuarioId, usuarioNome, e.Logradouro, e.Numero, e.Complemento, e.Bairro, e.Cidade, e.Estado, e.Cep, e.Tipo, e.Ativo, e.CreatedAt);
 }

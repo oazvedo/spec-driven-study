@@ -13,4 +13,10 @@ public class UsuarioRepository(AppDbContext context) : RepositoryBase<Usuario>(c
         var normalizado = Usuario.NormalizarEmail(email);
         return Set.AnyAsync(x => x.Email == normalizado && x.Id != ignorarId, cancellationToken);
     }
+
+    // Projeta só Id e Nome: não carrega nem rastreia a entidade
+    public async Task<IReadOnlyDictionary<Guid, string>> ObterNomesAsync(IReadOnlyCollection<Guid> ids, CancellationToken cancellationToken)
+        => await Set.Where(x => ids.Contains(x.Id))
+            .Select(x => new { x.Id, x.Nome })
+            .ToDictionaryAsync(x => x.Id, x => x.Nome, cancellationToken);
 }

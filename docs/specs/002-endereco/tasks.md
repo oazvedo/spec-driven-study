@@ -68,11 +68,20 @@
     (inputs `ativo`, `rotulo`, `carregando`; output `confirmar`, com o popconfirm ao inativar) e deixar
     nas duas features só a chamada à API e o `alterado`. Atualizar a skill `angular-crud`
   - Verificação: `npm test && npm run lint` (os specs das duas features continuam passando)
-- [ ] **T08. `widgets/enderecos-table`**
+- [x] **T08. `widgets/enderecos-table`**
   - Arquivos: `widgets/enderecos-table/*`
   - Testes: trocar de página chama `listar` com `page` e `pageSize` novos; a coluna usuário mostra o nome a partir do `usuarioId`;
     na página N, `irParaPrimeiraPagina()` chama `listar(1, pageSize)`. **Falha:** `usuarioId` fora da lista mostra um texto neutro, sem quebrar
   - Verificação: `npm test`
+- [x] **T08b. Backend devolve `usuarioNome` no `EnderecoResponse`** (descoberta na simplify da T08)
+  - Com mais de 100 usuários, a tabela mostrava "—" para dados válidos. O nome passa a vir da API e a tabela
+    deixa de carregar usuários
+  - Arquivos: `IUsuarioRepository`/`UsuarioRepository` (`ObterNomesAsync(ids)`, uma consulta), `EnderecoDtos.cs`,
+    `EnderecoService.cs` (o nome substitui o `ExisteAsync` na checagem do usuário), testes de unidade, integração e
+    funcionais; no frontend `endereco.model.ts`, `widgets/enderecos-table/*` e as fixtures dos specs
+  - Testes: listar devolve o nome de cada endereço com uma consulta de nomes por página; trocar o usuário no PUT devolve
+    o nome novo. **Falha:** usuário inexistente continua 404
+  - Verificação: `dotnet test backend && cd frontend && npm test && npm run lint`
 - [ ] **T09. `pages/enderecos-page` + item de menu** (a rota lazy já existe em `app.routes.ts`)
   - Arquivos: `pages/enderecos-page/*`, `app/app.ts` (`menu`)
   - Verificação: `npm run build && npm run lint` (o build volta a passar); teste manual: cadastrar, editar, inativar e excluir pela tela

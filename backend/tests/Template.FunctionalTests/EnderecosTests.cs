@@ -21,7 +21,7 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
     public async ValueTask InitializeAsync()
     {
         await factory.LimparBancoAsync(Ct);
-        _usuarioId = await CriarUsuarioAsync("ana@x.com");
+        _usuarioId = await CriarUsuarioAsync("Ana", "ana@x.com");
     }
 
     public ValueTask DisposeAsync()
@@ -30,9 +30,9 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
         return ValueTask.CompletedTask;
     }
 
-    private async Task<Guid> CriarUsuarioAsync(string email)
+    private async Task<Guid> CriarUsuarioAsync(string nome, string email)
     {
-        var response = await _client.PostAsJsonAsync("/api/usuarios", new CriarUsuarioRequest("Ana", email), Ct);
+        var response = await _client.PostAsJsonAsync("/api/usuarios", new CriarUsuarioRequest(nome, email), Ct);
         response.EnsureSuccessStatusCode();
         return (await response.Content.ReadFromJsonAsync<UsuarioResponse>(Ct))!.Id;
     }
@@ -58,7 +58,7 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
 
         var pagina = await _client.GetFromJsonAsync<PagedResult<EnderecoResponse>>(Url, Ct);
 
-        pagina!.Items.Should().HaveCount(20);
+        pagina!.Items.Should().HaveCount(20).And.OnlyContain(e => e.UsuarioNome == "Ana");
         pagina.Should().BeEquivalentTo(new { Page = 1, PageSize = 20, TotalCount = 25, TotalPages = 2 });
     }
 
@@ -83,7 +83,7 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         var criado = await response.Content.ReadFromJsonAsync<EnderecoResponse>(Ct);
-        criado!.Should().BeEquivalentTo(new { UsuarioId = _usuarioId, Logradouro = "Av. Paulista", Tipo = EnderecoTipo.Comercial, Ativo = true });
+        criado!.Should().BeEquivalentTo(new { UsuarioId = _usuarioId, UsuarioNome = "Ana", Logradouro = "Av. Paulista", Tipo = EnderecoTipo.Comercial, Ativo = true });
         response.Headers.Location!.AbsolutePath.Should().Be($"{Url}/{criado.Id}");
     }
 
@@ -115,7 +115,7 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
     public async Task Atualizar_RequestValido_Retorna200ComDadosNovos()
     {
         var endereco = await CriarAsync();
-        var outroUsuarioId = await CriarUsuarioAsync("bia@x.com");
+        var outroUsuarioId = await CriarUsuarioAsync("Bia", "bia@x.com");
 
         var response = await _client.PutAsJsonAsync($"{Url}/{endereco.Id}", new AtualizarEnderecoRequest(
             outroUsuarioId, "Rua Augusta", "500", "Apto 12", "Consolação", "São Paulo", "SP", "01305000", EnderecoTipo.Residencial), Ct);
@@ -123,7 +123,7 @@ public class EnderecosTests(ApiFactory factory) : IAsyncLifetime
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         (await ObterAsync(endereco.Id)).Should().BeEquivalentTo(new
         {
-            UsuarioId = outroUsuarioId, Logradouro = "Rua Augusta", Complemento = "Apto 12", Tipo = EnderecoTipo.Residencial
+            UsuarioId = outroUsuarioId, UsuarioNome = "Bia", Logradouro = "Rua Augusta", Complemento = "Apto 12", Tipo = EnderecoTipo.Residencial
         });
     }
 

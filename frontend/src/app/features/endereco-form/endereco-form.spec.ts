@@ -19,7 +19,7 @@ describe('EnderecoForm', () => {
     cep: '01310-100',
     tipo: 1,
   };
-  const existente: Endereco = { ...request, id: '1', ativo: true, createdAt: '2026-10-13T00:00:00Z' };
+  const existente: Endereco = { ...request, id: '1', usuarioNome: 'Ana', ativo: true, createdAt: '2026-10-13T00:00:00Z' };
   const api = { criar: vi.fn(), atualizar: vi.fn() };
   const usuarioApi = { listar: vi.fn() };
   const mensagens = { error: vi.fn() };

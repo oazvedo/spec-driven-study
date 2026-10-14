@@ -41,7 +41,8 @@ na `EnderecoConfig`, que é o comportamento que já está na migration: o modelo
 | DELETE | `/api/enderecos/{id:guid}` | — | 204 | 404 |
 
 `EnderecoRequest = { usuarioId, logradouro, numero, complemento?, bairro, cidade, estado, cep, tipo }` (tipo numérico).
-`EnderecoResponse = { id, usuarioId, logradouro, numero, complemento, bairro, cidade, estado, cep, tipo, ativo, createdAt }`.
+`EnderecoResponse = { id, usuarioId, usuarioNome, logradouro, numero, complemento, bairro, cidade, estado, cep, tipo, ativo, createdAt }`.
+O `usuarioNome` vem de `IUsuarioRepository.ObterNomesAsync(ids)`, uma consulta por página (T08b).
 Erros em ProblemDetails (ADR 0006).
 
 ## Backend: arquivos
@@ -66,8 +67,7 @@ Erros em ProblemDetails (ADR 0006).
 - **`features/endereco-toggle-ativo/`**: igual a `usuario-toggle-ativo`.
 - **`features/endereco-excluir/`**: botão "Excluir" com `nz-popconfirm`; emite `excluido = output<void>()`.
 - **`widgets/enderecos-table/`**: `nz-table` com paginação no servidor. Colunas: usuário, logradouro e número, cidade/UF,
-  CEP, tipo, status e ações (editar, toggle, excluir). O nome do usuário vem de um mapa `id → nome` montado
-  a partir da mesma lista `UsuarioApi.listar(1, 100)`.
+  CEP, tipo, status e ações (editar, toggle, excluir). O nome do usuário vem no próprio `usuarioNome` da API (T08b).
 - **`pages/enderecos-page/`**: tabela + form em `nz-modal`. A rota `enderecos` já está em `app.routes.ts`, mas aponta
   para uma página que ainda não existe; falta o item no `menu` de `app/app.ts`.
 - `ng-zorro.less`: `select` (e qualquer outro componente ainda não importado).
@@ -100,8 +100,8 @@ Erros em ProblemDetails (ADR 0006).
 | CA-11 | Frontend unit | `endereco-excluir: cancelar a confirmação não chama a API` |
 
 ## Riscos e decisões pendentes
-- **Lista de usuários limitada a 100** (máximo do `pageSize`, RN-05 da spec 001). Com mais de 100 usuários, o seletor e o nome
-  na tabela ficam incompletos. Aceito para esta spec; a busca de usuário no seletor entra junto com os filtros (fora de escopo).
+- **Lista de usuários limitada a 100** (máximo do `pageSize`, RN-05 da spec 001). Com mais de 100 usuários, o seletor do
+  formulário fica incompleto (o nome na tabela vem da API desde a T08b). Aceito para esta spec; a busca de usuário no seletor entra junto com os filtros (fora de escopo).
 - **Tipo numérico no JSON:** a API não usa `JsonStringEnumConverter`, então `tipo` trafega como `1`, `2` ou `3`. O frontend
   guarda os rótulos em `endereco.model.ts`. Mudar para string seria uma decisão global (afeta todos os enums) e não entra aqui.
 - **Frontend quebrado hoje:** a rota `enderecos` importa `../pages/enderecos-page`, que não existe. O build só volta a passar na task da página;

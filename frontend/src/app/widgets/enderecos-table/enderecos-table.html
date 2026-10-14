@@ -1,0 +1,48 @@
+<nz-table
+  #tabela
+  [nzData]="itens()"
+  [nzFrontPagination]="false"
+  [nzTotal]="total()"
+  [nzPageIndex]="page()"
+  [nzPageSize]="pageSize()"
+  [nzLoading]="enderecos.isLoading()"
+  nzShowSizeChanger
+  [nzPageSizeOptions]="[10, 20, 50, 100]"
+  (nzQueryParams)="mudarPagina($event)"
+>
+  <thead>
+    <tr>
+      <th>Usuário</th>
+      <th>Endereço</th>
+      <th>Cidade/UF</th>
+      <th>CEP</th>
+      <th>Tipo</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (endereco of tabela.data; track endereco.id) {
+      <tr>
+        <td>{{ endereco.usuarioNome }}</td>
+        <td>{{ descrever(endereco) }}</td>
+        <td>{{ endereco.cidade }}/{{ endereco.estado }}</td>
+        <td>{{ endereco.cep }}</td>
+        <td>{{ tipos[endereco.tipo] }}</td>
+        <td><app-ativo-tag [ativo]="endereco.ativo" /></td>
+        <td>
+          <button
+            nz-button
+            nzType="link"
+            [attr.aria-label]="'Editar ' + descrever(endereco)"
+            (click)="editar.emit(endereco)"
+          >
+            Editar
+          </button>
+          <app-endereco-toggle-ativo [endereco]="endereco" (alterado)="recarregar()" />
+          <app-endereco-excluir [endereco]="endereco" (excluido)="recarregar()" />
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>

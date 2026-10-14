@@ -22,13 +22,17 @@ public class EnderecoServiceTests
 
     private static readonly Guid UsuarioId = Guid.NewGuid();
 
+    // Usuários que "existem" no banco falso; ObterNomesAsync devolve só os ids que estão aqui
+    private readonly Dictionary<Guid, string> _usuarios = new() { [UsuarioId] = "Ana" };
+
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
     public EnderecoServiceTests()
     {
         _sut = new EnderecoService(_repository, _usuarioRepository, _unitOfWork,
             new CriarEnderecoRequestValidator(), new AtualizarEnderecoRequestValidator());
-        _usuarioRepository.ExisteAsync(UsuarioId, Arg.Any<CancellationToken>()).Returns(true);
+        _usuarioRepository.ObterNomesAsync(Arg.Any<IReadOnlyCollection<Guid>>(), Arg.Any<CancellationToken>())
+            .Returns(ci => _usuarios.Where(u => ci.Arg<IReadOnlyCollection<Guid>>().Contains(u.Key)).ToDictionary());
     }
 
     private static CriarEnderecoRequest CriarRequest(Guid usuarioId)
@@ -50,8 +54,7 @@ public class EnderecoServiceTests
     {
         var response = await _sut.CriarAsync(CriarRequest(UsuarioId), Ct);
 
-        response.UsuarioId.Should().Be(UsuarioId);
-        response.Ativo.Should().BeTrue();
+        response.Should().BeEquivalentTo(new { UsuarioId, UsuarioNome = "Ana", Ativo = true });
         await _repository.Received(1).AdicionarAsync(Arg.Is<Endereco>(e => e.Id == response.Id), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
@@ -79,29 +82,27 @@ public class EnderecoServiceTests
 
     // CA-07
     [Fact]
-    public async Task AtualizarAsync_MesmoUsuario_AlteraECommitaSemConsultarUsuario()
+    public async Task AtualizarAsync_RequestValido_AlteraECommita()
     {
         var endereco = EnderecoExistente();
 
         var response = await _sut.AtualizarAsync(endereco.Id, AtualizarRequest(UsuarioId), Ct);
 
-        response.Logradouro.Should().Be("Rua Augusta");
-        response.Tipo.Should().Be(EnderecoTipo.Residencial);
-        await _usuarioRepository.DidNotReceive().ExisteAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
+        response.Should().BeEquivalentTo(new { Logradouro = "Rua Augusta", Tipo = EnderecoTipo.Residencial, UsuarioNome = "Ana" });
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 
-    // CA-07: trocar o dono do endereço
+    // CA-07: trocar o dono do endereço devolve o nome do novo dono
     [Fact]
     public async Task AtualizarAsync_OutroUsuarioExistente_TrocaOUsuario()
     {
         var endereco = EnderecoExistente();
         var outroUsuarioId = Guid.NewGuid();
-        _usuarioRepository.ExisteAsync(outroUsuarioId, Arg.Any<CancellationToken>()).Returns(true);
+        _usuarios[outroUsuarioId] = "Bia";
 
         var response = await _sut.AtualizarAsync(endereco.Id, AtualizarRequest(outroUsuarioId), Ct);
 
-        response.UsuarioId.Should().Be(outroUsuarioId);
+        response.Should().BeEquivalentTo(new { UsuarioId = outroUsuarioId, UsuarioNome = "Bia" });
         await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
     }
 
@@ -177,7 +178,22 @@ public class EnderecoServiceTests
 
         var pagina = await _sut.ListarAsync(2, 10, Ct);
 
-        pagina.Items.Should().ContainSingle().Which.Should().BeEquivalentTo(new { endereco.Id, Ativo = true });
+        pagina.Items.Should().ContainSingle().Which.Should().BeEquivalentTo(new { endereco.Id, UsuarioNome = "Ana", Ativo = true });
         pagina.Should().BeEquivalentTo(new { Page = 2, PageSize = 10, TotalCount = 11 });
+    }
+
+    // Os nomes da página inteira vêm de uma consulta só, sem repetir o mesmo usuário
+    [Fact]
+    public async Task ListarAsync_VariosEnderecosDoMesmoUsuario_ConsultaOsNomesUmaVez()
+    {
+        var enderecos = new[] { EnderecoExistente(), EnderecoExistente() };
+        _repository.ListarPaginadoAsync(1, 20, Arg.Any<CancellationToken>())
+            .Returns(new PagedResult<Endereco>(enderecos, 1, 20, 2));
+
+        var pagina = await _sut.ListarAsync(1, 20, Ct);
+
+        pagina.Items.Select(x => x.UsuarioNome).Should().Equal("Ana", "Ana");
+        await _usuarioRepository.Received(1).ObterNomesAsync(
+            Arg.Is<IReadOnlyCollection<Guid>>(ids => ids.SequenceEqual(new[] { UsuarioId })), Arg.Any<CancellationToken>());
     }
 }

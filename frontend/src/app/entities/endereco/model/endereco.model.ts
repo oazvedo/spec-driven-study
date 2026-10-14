@@ -2,6 +2,7 @@
 export interface Endereco {
   id: string;
   usuarioId: string;
+  usuarioNome: string;
   logradouro: string;
   numero: string;
   complemento: string | null;

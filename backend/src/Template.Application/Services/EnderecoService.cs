@@ -16,34 +16,41 @@ public class EnderecoService(
     IValidator<CriarEnderecoRequest> criarValidator,
     IValidator<AtualizarEnderecoRequest> atualizarValidator) : IEnderecoService
 {
+    // Uma consulta de nomes para a página inteira; a FK garante que todo usuarioId existe
     public async Task<PagedResult<EnderecoResponse>> ListarAsync(int page, int pageSize, CancellationToken cancellationToken)
-        => (await enderecoRepository.ListarPaginadoAsync(page, pageSize, cancellationToken)).Map(e => e.ToResponse());
+    {
+        var pagina = await enderecoRepository.ListarPaginadoAsync(page, pageSize, cancellationToken);
+        var nomes = await usuarioRepository.ObterNomesAsync(pagina.Items.Select(e => e.UsuarioId).Distinct().ToList(), cancellationToken);
+        return pagina.Map(e => e.ToResponse(nomes[e.UsuarioId]));
+    }
 
     public async Task<EnderecoResponse> ObterAsync(Guid id, CancellationToken cancellationToken)
-        => (await ObterEntidadeAsync(id, cancellationToken)).ToResponse();
+    {
+        var endereco = await ObterEntidadeAsync(id, cancellationToken);
+        return endereco.ToResponse(await ObterNomeDoUsuarioAsync(endereco.UsuarioId, cancellationToken));
+    }
 
     public async Task<EnderecoResponse> CriarAsync(CriarEnderecoRequest request, CancellationToken cancellationToken)
     {
         await criarValidator.ValidateAndThrowAsync(request, cancellationToken);
-        await GarantirUsuarioExisteAsync(request.UsuarioId, cancellationToken);
+        var usuarioNome = await ObterNomeDoUsuarioAsync(request.UsuarioId, cancellationToken);
 
         var endereco = new Endereco(request.UsuarioId, request.Logradouro, request.Numero, request.Complemento, request.Bairro, request.Cidade, request.Estado, request.Cep, request.Tipo);
         await enderecoRepository.AdicionarAsync(endereco, cancellationToken);
         await unitOfWork.CommitAsync(cancellationToken);
-        return endereco.ToResponse();
+        return endereco.ToResponse(usuarioNome);
     }
 
     public async Task<EnderecoResponse> AtualizarAsync(Guid id, AtualizarEnderecoRequest request, CancellationToken cancellationToken)
     {
         await atualizarValidator.ValidateAndThrowAsync(request, cancellationToken);
         var endereco = await ObterEntidadeAsync(id, cancellationToken);
-        if (request.UsuarioId != endereco.UsuarioId) // mesmo usuário não precisa consultar
-            await GarantirUsuarioExisteAsync(request.UsuarioId, cancellationToken);
+        var usuarioNome = await ObterNomeDoUsuarioAsync(request.UsuarioId, cancellationToken);
 
         endereco.Atualizar(request.UsuarioId, request.Logradouro, request.Numero, request.Complemento, request.Bairro, request.Cidade, request.Estado, request.Cep, request.Tipo);
         enderecoRepository.Atualizar(endereco);
         await unitOfWork.CommitAsync(cancellationToken);
-        return endereco.ToResponse();
+        return endereco.ToResponse(usuarioNome);
     }
 
     public async Task AtivarAsync(Guid id, CancellationToken cancellationToken)
@@ -70,10 +77,9 @@ public class EnderecoService(
         => await enderecoRepository.ObterPorIdAsync(id, cancellationToken)
            ?? throw new NotFoundException($"Endereço {id} não encontrado.");
 
+    // O nome vai na resposta e também prova que o usuário existe:
     // 404 com mensagem clara, em vez de deixar a FK falhar no commit
-    private async Task GarantirUsuarioExisteAsync(Guid usuarioId, CancellationToken cancellationToken)
-    {
-        if (!await usuarioRepository.ExisteAsync(usuarioId, cancellationToken))
-            throw new NotFoundException($"Usuário {usuarioId} não encontrado.");
-    }
+    private async Task<string> ObterNomeDoUsuarioAsync(Guid usuarioId, CancellationToken cancellationToken)
+        => (await usuarioRepository.ObterNomesAsync([usuarioId], cancellationToken)).GetValueOrDefault(usuarioId)
+           ?? throw new NotFoundException($"Usuário {usuarioId} não encontrado.");
 }
