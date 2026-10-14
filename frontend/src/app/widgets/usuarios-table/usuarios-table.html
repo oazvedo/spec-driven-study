@@ -23,7 +23,7 @@
       <tr>
         <td>{{ usuario.nome }}</td>
         <td>{{ usuario.email }}</td>
-        <td><app-usuario-status-tag [ativo]="usuario.ativo" /></td>
+        <td><app-ativo-tag [ativo]="usuario.ativo" /></td>
         <td>
           <button nz-button nzType="link" [attr.aria-label]="'Editar ' + usuario.nome" (click)="editar.emit(usuario)">
             Editar

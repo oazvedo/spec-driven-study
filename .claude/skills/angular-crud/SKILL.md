@@ -9,8 +9,8 @@ Regras completas no ADR 0009 (FSD + NG-ZORRO), no ADR 0008 (contrato REST) e no 
 Os exemplos usam `usuario`. Para outra entidade, troque o nome.
 
 > A base comum (`shared/api` com `PagedResult<T>`, interceptor de ProblemDetails e `STATUS_TRATADOS`;
-> `shared/forms` com `applyServerErrors` e `marcarInvalidos`; o shell em `app/`; o proxy `/api`) é criada pela
-> spec 001. Aqui só se adiciona uma entidade.
+> `shared/forms` com `applyServerErrors` e `marcarInvalidos`; `shared/ui` com `AtivoTag`; o shell em `app/`;
+> o proxy `/api`) já existe. Aqui só se adiciona uma entidade.
 
 ## Regra de ouro do FSD
 Os imports só vão **para baixo**: `app → pages → widgets → features → entities → shared`.
@@ -24,9 +24,9 @@ Uma slice não importa outra slice da mesma camada. Toda slice exporta só pelo 
 entities/usuario/
 ├── model/usuario.model.ts
 ├── api/usuario.api.ts
-├── ui/usuario-status-tag.ts             # nz-tag Ativo/Inativo (opcional), classe UsuarioStatusTag
 └── index.ts
 ```
+A tag Ativo/Inativo é a mesma para toda entidade: use `AtivoTag` (`app-ativo-tag`) de `shared/ui`, não crie uma por entidade.
 ```ts
 // model/usuario.model.ts: espelha os DTOs do backend (ADR 0007)
 export interface Usuario { id: string; nome: string; email: string; ativo: boolean; createdAt: string; }
@@ -76,7 +76,7 @@ export class UsuarioApi {
   `rxResource({ params: () => ({ page: page(), pageSize: pageSize() }), stream: ({ params }) => api.listar(params.page, params.pageSize) })`.
 - `[nzLoading]` ligado ao status do resource, e os métodos públicos `recarregar()` (mesma página) e
   `irParaPrimeiraPagina()` (volta à página 1; se já estiver nela, recarrega).
-- Colunas: nome, e-mail, status (`usuario-status-tag`) e ações (editar + `usuario-toggle-ativo`).
+- Colunas: nome, e-mail, status (`app-ativo-tag` de `shared/ui`) e ações (editar + `usuario-toggle-ativo`).
 - Emite `editar = output<Usuario>()`. O widget não abre o modal; quem decide é a página.
 
 ### 4. `pages/usuarios-page/` + rota lazy

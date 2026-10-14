@@ -16,8 +16,8 @@ app/       # bootstrap, providers, rotas raiz, layout (nz-layout)
 pages/     # páginas roteáveis: compõem widgets e features (ex.: usuarios-list-page)
 widgets/   # blocos de UI compostos (ex.: usuarios-table)
 features/  # ações do usuário com valor de negócio (ex.: usuario-form, usuario-toggle-ativo)
-entities/  # entidades de negócio: model (tipos), api (HTTP), ui pequena (ex.: usuario-status-tag)
-shared/    # sem domínio: api base (PagedResult<T>, interceptor de erro), ui, utils, config
+entities/  # entidades de negócio: model (tipos), api (HTTP), ui pequena da própria entidade
+shared/    # sem domínio: api base (PagedResult<T>, interceptor de erro), ui (ex.: ativo-tag), utils, config
 ```
 Regras:
 - **Imports só para baixo:** `app → pages → widgets → features → entities → shared`. Uma slice não

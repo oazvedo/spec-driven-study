@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, output, signal } 
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
-import { Usuario, UsuarioApi, UsuarioStatusTag } from '../../entities/usuario';
+import { Usuario, UsuarioApi } from '../../entities/usuario';
 import { UsuarioToggleAtivo } from '../../features/usuario-toggle-ativo';
+import { AtivoTag } from '../../shared/ui';
 
 // Listagem paginada no servidor (RN-05). Não abre o formulário: emite `editar` e a página decide.
 @Component({
   selector: 'app-usuarios-table',
-  imports: [NzTableModule, NzButtonModule, UsuarioStatusTag, UsuarioToggleAtivo],
+  imports: [NzTableModule, NzButtonModule, AtivoTag, UsuarioToggleAtivo],
   templateUrl: './usuarios-table.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

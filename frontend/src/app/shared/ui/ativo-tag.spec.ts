@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { UsuarioStatusTag } from './usuario-status-tag';
+import { AtivoTag } from './ativo-tag';
 
-describe('UsuarioStatusTag', () => {
+describe('AtivoTag', () => {
   function renderizar(ativo: boolean): HTMLElement {
-    const fixture = TestBed.createComponent(UsuarioStatusTag);
+    const fixture = TestBed.createComponent(AtivoTag);
     fixture.componentRef.setInput('ativo', ativo);
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('mostra "Ativo" para usuário ativo', () => {
+  it('mostra "Ativo" quando ativo', () => {
     expect(renderizar(true).textContent?.trim()).toBe('Ativo');
   });
 
-  it('mostra "Inativo" para usuário inativo', () => {
+  it('mostra "Inativo" quando inativo', () => {
     expect(renderizar(false).textContent?.trim()).toBe('Inativo');
   });
 });
