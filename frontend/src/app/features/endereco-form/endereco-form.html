@@ -1,0 +1,80 @@
+<form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="salvar()">
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-usuario" nzRequired>Usuário</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('usuarioId')">
+      <nz-select
+        nzId="endereco-usuario"
+        formControlName="usuarioId"
+        nzShowSearch
+        nzPlaceHolder="Selecione o usuário"
+        [nzLoading]="usuarios.isLoading()"
+      >
+        @for (usuario of usuarios.value()?.items ?? []; track usuario.id) {
+          <nz-option [nzValue]="usuario.id" [nzLabel]="usuario.nome + ' (' + usuario.email + ')'" />
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-logradouro" nzRequired>Logradouro</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('logradouro')">
+      <input nz-input id="endereco-logradouro" formControlName="logradouro" autocomplete="address-line1" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-numero" nzRequired>Número</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('numero')">
+      <input nz-input id="endereco-numero" formControlName="numero" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-complemento">Complemento</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('complemento')">
+      <input nz-input id="endereco-complemento" formControlName="complemento" autocomplete="address-line2" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-bairro" nzRequired>Bairro</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('bairro')">
+      <input nz-input id="endereco-bairro" formControlName="bairro" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-cidade" nzRequired>Cidade</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('cidade')">
+      <input nz-input id="endereco-cidade" formControlName="cidade" autocomplete="address-level2" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-estado" nzRequired>Estado (UF)</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('estado')">
+      <input nz-input id="endereco-estado" formControlName="estado" [maxlength]="estadoMax" placeholder="SP" autocomplete="address-level1" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-cep" nzRequired>CEP</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('cep')">
+      <input nz-input id="endereco-cep" formControlName="cep" placeholder="00000-000" inputmode="numeric" autocomplete="postal-code" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="endereco-tipo" nzRequired>Tipo</nz-form-label>
+    <nz-form-control [nzErrorTip]="mensagemDeErro('tipo')">
+      <nz-select nzId="endereco-tipo" formControlName="tipo" nzPlaceHolder="Selecione o tipo">
+        @for (tipo of tipos; track tipo.valor) {
+          <nz-option [nzValue]="tipo.valor" [nzLabel]="tipo.rotulo" />
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button nzType="primary" type="submit" [nzLoading]="salvando()">Salvar</button>
+</form>

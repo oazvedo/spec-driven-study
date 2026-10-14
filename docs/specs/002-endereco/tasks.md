@@ -50,7 +50,7 @@
   - Arquivos: renomear `entities/enderecos` → `entities/endereco`; `model/endereco.model.ts`, `api/endereco.api.ts`,
     `ui/endereco-status-tag.ts`, `index.ts` e os `.spec.ts`
   - Verificação: `npm test` (URL e verbo de cada método, inclusive `DELETE` em `excluir`)
-- [ ] **T06. `features/endereco-form`** (criar e editar, seletor de usuário e de tipo)
+- [x] **T06. `features/endereco-form`** (criar e editar, seletor de usuário e de tipo)
   - Arquivos: `features/endereco-form/*`, `src/ng-zorro.less` (`select`)
   - Cobre: CA-04 (frontend unit)
   - Testes: form válido chama `criar` e emite `salvo`; o seletor lista os usuários de `UsuarioApi.listar(1, 100)`.

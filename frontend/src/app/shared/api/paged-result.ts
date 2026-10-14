@@ -6,3 +6,6 @@ export interface PagedResult<T> {
   pageSize: number;
   totalCount: number;
 }
+
+// Maior pageSize que a API aceita em qualquer listagem ([Range(1, 100)] nos controllers)
+export const PAGE_SIZE_MAX = 100;
