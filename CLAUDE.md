@@ -7,14 +7,15 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 1. Leia os ADRs em `docs/adr/` (índice em `docs/adr/README.md`). **Eles são lei.** Se uma tarefa exigir
    contrariar um ADR, pare e proponha um novo ADR (skill `adr`). Não desvie em silêncio.
 2. Trabalhe a partir de uma spec em `docs/specs/NNN-nome/`. Sem spec, crie uma (skill `spec`).
-3. Implemente **uma task por vez** (skill `implement-task`).
+3. Implemente **um bloco por vez** (uma fase do `tasks.md`, skill `implement-task`): as tasks em sequência,
+   cada uma com a sua verificação, e um relatório só no fim do bloco.
 
 ## Skills do projeto (`.claude/skills/`)
 | Skill | Quando usar |
 |---|---|
 | `spec` | Nova feature ou mudança de comportamento: cria spec.md → plan.md → tasks.md |
 | `adr` | Qualquer decisão técnica nova ou mudança de uma decisão existente |
-| `implement-task` | Executar a próxima task aberta de um `tasks.md` |
+| `implement-task` | Executar o próximo bloco (fase) de tasks abertas de um `tasks.md` |
 | `dotnet-crud` | Criar ou alterar uma entidade/recurso CRUD no backend |
 | `angular-crud` | Criar ou alterar uma feature CRUD no frontend |
 | `study-log` | Ao concluir uma task ou spec: registrar o que foi aprendido |
@@ -22,7 +23,8 @@ Documentação em PT-BR. Termos de domínio no código em português; termos té
 
 ## Skills globais e quando usar
 - `andrej-karpathy-skills:karpathy-guidelines`: toda tarefa de código.
-- `simplify`: **obrigatória** depois de toda implementação, antes de marcar como concluída ou commitar. Nunca pule, nem em mudanças pequenas.
+- `simplify`: **obrigatória** uma vez por bloco (sobre o diff do bloco inteiro), antes do relatório e de commitar.
+  Nunca pule, nem em blocos pequenos. Achados fora do escopo do bloco vão para o `## Backlog` do `tasks.md`.
 - `code-review`: ao terminar todas as tasks de uma spec.
 - `security-review`: ao mexer em input do usuário, acesso a dados, autenticação ou permissões.
 - `better-accessibility` e `better-writing`: em telas Angular (a11y e textos de interface).

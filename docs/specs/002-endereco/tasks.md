@@ -95,3 +95,11 @@
 - [ ] **T11. Fechamento**
   - code-review, cobertura dos CAs no `plan.md`, study-log, spec `Concluída` no roadmap
   - Verificação: `dotnet test backend && cd frontend && npm run lint && npm test && npm run e2e`
+
+## Backlog
+> Achados da simplify fora do escopo do bloco. Decididos no fechamento da spec (viram task, spec nova ou são descartados).
+- Tratamento de erro 400 e `mensagemDeErro` iguais em `usuario-form` e `endereco-form`: candidatos a helper em `shared/forms` (a partir do 3º form).
+- Estado de paginação igual em `usuarios-table` e `enderecos-table` (`page`, `pageSize`, `rxResource`, `irParaPrimeiraPagina`): candidato a `pagedResource()` em `shared/api`.
+- `alterar()` igual nas duas features de toggle: candidato a helper só se surgir uma 3ª entidade.
+- Seletor de usuário do `endereco-form` limitado a 100 (`PAGE_SIZE_MAX`): busca de usuário no seletor (fora de escopo da spec).
+- Enums trafegam como número no JSON: `JsonStringEnumConverter` global exigiria ADR novo.
