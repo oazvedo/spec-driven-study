@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Infrastructure.Data;
 
+// Todas as classes do projeto dividem o mesmo banco e o limpam antes de cada teste:
+// em paralelo, uma apagaria os dados da outra
+[assembly: Xunit.v3.Parallelization(Mode = Xunit.Sdk.ParallelMode.None)]
+
 namespace Template.Tests.Shared;
 
 // Compartilhado (via <Compile Link>) pelos projetos de teste que sobem Postgres real

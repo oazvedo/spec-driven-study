@@ -46,6 +46,26 @@ public class EnderecoService(
         return endereco.ToResponse();
     }
 
+    public async Task AtivarAsync(Guid id, CancellationToken cancellationToken)
+    {
+        (await ObterEntidadeAsync(id, cancellationToken)).Ativar();
+        await unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    public async Task InativarAsync(Guid id, CancellationToken cancellationToken)
+    {
+        (await ObterEntidadeAsync(id, cancellationToken)).Inativar();
+        await unitOfWork.CommitAsync(cancellationToken);
+    }
+
+    // Remoção física: endereço não tem valor histórico (ADRs 0015 e 0016)
+    public async Task ExcluirAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var endereco = await ObterEntidadeAsync(id, cancellationToken);
+        enderecoRepository.Remover(endereco);
+        await unitOfWork.CommitAsync(cancellationToken);
+    }
+
     private async Task<Endereco> ObterEntidadeAsync(Guid id, CancellationToken cancellationToken)
         => await enderecoRepository.ObterPorIdAsync(id, cancellationToken)
            ?? throw new NotFoundException($"Endereço {id} não encontrado.");

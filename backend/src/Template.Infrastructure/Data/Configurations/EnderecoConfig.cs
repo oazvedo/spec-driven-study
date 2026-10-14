@@ -10,7 +10,7 @@ public class EnderecoConfig : IEntityTypeConfiguration<Endereco>
     {
         builder.ToTable("enderecos");
         builder.HasKey(x => x.Id);
-        builder.HasOne<Usuario>().WithMany().HasForeignKey(x => x.UsuarioId);
+        builder.HasOne<Usuario>().WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade); // explícito (ADR 0015)
         builder.Property(x => x.Logradouro).HasMaxLength(Endereco.LogradouroMaxLength).IsRequired();
         builder.Property(x => x.Numero).HasMaxLength(Endereco.NumeroMaxLength).IsRequired();
         builder.Property(x => x.Complemento).HasMaxLength(Endereco.ComplementoMaxLength);

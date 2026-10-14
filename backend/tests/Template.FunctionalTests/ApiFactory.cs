@@ -16,7 +16,7 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     public async ValueTask InitializeAsync()
     {
         await _postgres.StartAsync();
-        StartServer(); // sobe a API (e aplica as migrations) uma vez, antes dos testes rodarem em paralelo
+        StartServer(); // sobe a API (e aplica as migrations) uma vez, antes dos testes
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

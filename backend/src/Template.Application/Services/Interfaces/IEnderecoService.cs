@@ -9,4 +9,7 @@ public interface IEnderecoService
     Task<EnderecoResponse> ObterAsync(Guid id, CancellationToken cancellationToken);
     Task<EnderecoResponse> CriarAsync(CriarEnderecoRequest request, CancellationToken cancellationToken);
     Task<EnderecoResponse> AtualizarAsync(Guid id, AtualizarEnderecoRequest request, CancellationToken cancellationToken);
+    Task AtivarAsync(Guid id, CancellationToken cancellationToken);
+    Task InativarAsync(Guid id, CancellationToken cancellationToken);
+    Task ExcluirAsync(Guid id, CancellationToken cancellationToken);
 }

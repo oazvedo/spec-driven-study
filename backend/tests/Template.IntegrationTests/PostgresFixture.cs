@@ -6,7 +6,6 @@ using Template.Tests.Shared;
 using Testcontainers.PostgreSql;
 
 [assembly: AssemblyFixture(typeof(Template.IntegrationTests.PostgresFixture))]
-
 namespace Template.IntegrationTests;
 
 // Um Postgres real (Testcontainers) para todos os testes de integração, registrado pelo próprio InfraModule
