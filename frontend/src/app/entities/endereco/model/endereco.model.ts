@@ -37,6 +37,9 @@ export const ENDERECO_TIPO_ROTULOS: Record<EnderecoTipo, string> = {
   3: 'Entrega',
 };
 
+// Como um endereço aparece em uma linha: na tabela e no aria-label das ações
+export const descreverEndereco = (e: Pick<Endereco, 'logradouro' | 'numero'>) => `${e.logradouro}, ${e.numero}`;
+
 // Mesmos limites de Endereco.*MaxLength / EstadoLength no backend
 export const ENDERECO_LOGRADOURO_MAX = 100;
 export const ENDERECO_NUMERO_MAX = 10;

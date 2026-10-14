@@ -66,8 +66,9 @@ export class UsuarioApi {
     o `nz-form-control` exibir o erro.
   - O botão salvar fica `nzLoading` enquanto a requisição está em andamento, e `salvar()` começa com
     `if (this.salvando()) return;`. O `nzLoading` só bloqueia o clique; um Enter no campo enviaria de novo.
-- **`features/usuario-toggle-ativo/`**: um `nz-switch` ou botão que chama `ativar` ou `inativar`,
-  com confirmação via `nz-popconfirm` ao inativar. Emite `alterado = output<void>()`.
+- **`features/usuario-toggle-ativo/`**: usa o `AtivoToggleButton` (`app-ativo-toggle-button`) de `shared/ui`,
+  que já traz o rótulo Ativar/Inativar e o `nz-popconfirm` ao inativar. A feature só passa `ativo`, `rotulo`,
+  `confirmacao` e `carregando`, chama `ativar` ou `inativar` no `(confirmar)` e emite `alterado = output<void>()`.
 
 ### 3. `widgets/usuarios-table/`: listagem paginada
 - `nz-table` com **paginação no servidor**: `[nzFrontPagination]="false"`, `[nzTotal]`, `[nzPageIndex]`,

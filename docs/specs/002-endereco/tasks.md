@@ -57,12 +57,17 @@
     **Falha:** form vazio não chama a API e mostra os erros; UF e CEP inválidos mostram a mensagem; um 400 do servidor
     exibe o erro no campo; um 404 de usuário mostra a mensagem
   - Verificação: `npm test`
-- [ ] **T07. `features/endereco-toggle-ativo` e `features/endereco-excluir`**
+- [x] **T07. `features/endereco-toggle-ativo` e `features/endereco-excluir`**
   - Arquivos: `features/endereco-toggle-ativo/*`, `features/endereco-excluir/*`
   - Cobre: CA-09 e CA-11 (frontend unit)
   - Testes: confirmar a exclusão chama `excluir` e emite `excluido`; o toggle chama `ativar` ou `inativar`.
     **Falha:** cancelar a confirmação não chama a API
   - Verificação: `npm test`
+- [x] **T07b. Botão Ativar/Inativar único em `shared/ui`** (descoberta na simplify da T07)
+  - `endereco-toggle-ativo` e `usuario-toggle-ativo` são cópias: criar `shared/ui/ativo-toggle-button`
+    (inputs `ativo`, `rotulo`, `carregando`; output `confirmar`, com o popconfirm ao inativar) e deixar
+    nas duas features só a chamada à API e o `alterado`. Atualizar a skill `angular-crud`
+  - Verificação: `npm test && npm run lint` (os specs das duas features continuam passando)
 - [ ] **T08. `widgets/enderecos-table`**
   - Arquivos: `widgets/enderecos-table/*`
   - Testes: trocar de página chama `listar` com `page` e `pageSize` novos; a coluna usuário mostra o nome a partir do `usuarioId`;
